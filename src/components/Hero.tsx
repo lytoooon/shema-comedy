@@ -20,28 +20,28 @@ export default function Hero() {
       <div className="hero__content page-gutter">
         <p className="eyebrow hero__eyebrow">
           <span className="live-dot" />
-          Actor · Creator · Storyteller
+          Zambian comedian · Creator · UNZA student
         </p>
         <h1 id="hero-title">
-          MARCUS
+          SHEMA
           <br />
-          <span>COLE</span>
+          <span>COMEDY</span>
         </h1>
         <div className="hero__bottom">
           <p className="hero__intro">
-            Making the ordinary
+            Arnold Shema Rukhina
             <br />
-            feel unforgettable.
+            Mining engineering student by day.
           </p>
-          <a className="text-link" href="#work">
-            Explore the work <span aria-hidden="true">↘</span>
+          <a className="text-link" href="#collaborations">
+            Find the funny <span aria-hidden="true">↘</span>
           </a>
         </div>
       </div>
       <p className="hero__index" aria-hidden="true">
-        01 / 05
+        LUSAKA · ZAMBIA
       </p>
-      <a className="hero__scroll" href="#work" aria-label="Scroll to selected work">
+      <a className="hero__scroll" href="#work" aria-label="Scroll to Shema Comedy">
         <span />
       </a>
     </section>

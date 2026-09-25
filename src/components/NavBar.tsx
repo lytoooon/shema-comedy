@@ -3,9 +3,9 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const links = [
-  { label: "Work", href: "#work" },
-  { label: "Collaborations", href: "#collaborations" },
-  { label: "Life", href: "#life" },
+  { label: "The comedy", href: "#work" },
+  { label: "About Shema", href: "#life" },
+  { label: "Videos", href: "#collaborations" },
 ];
 
 export default function NavBar() {
@@ -27,8 +27,8 @@ export default function NavBar() {
 
   return (
     <header className="site-header">
-      <a className="brand" href="#hero" aria-label="Marcus Cole home">
-        MC<span>.</span>
+      <a className="brand" href="#hero" aria-label="Shema Comedy home">
+        SC<span>.</span>
       </a>
       <nav className="nav-links" aria-label="Main navigation">
         {links.map((link) => (
@@ -46,7 +46,7 @@ export default function NavBar() {
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.97 }}
       >
-        Let&apos;s talk <span aria-hidden="true">↗</span>
+        Watch skits <span aria-hidden="true">↗</span>
       </motion.a>
     </header>
   );

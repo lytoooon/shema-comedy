@@ -5,27 +5,27 @@ import { motion } from "framer-motion";
 const work = [
   {
     number: "01",
-    type: "CAMPAIGN · 2025",
-    title: "Made to move",
-    brand: "On Running",
+    type: "EVERYDAY ZAMBIAN LIFE",
+    title: "Life, with a punchline",
+    brand: "The comedy",
     image:
       "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1200&q=85",
     className: "work-card--tall",
   },
   {
     number: "02",
-    type: "EDITORIAL · 2025",
-    title: "The long way",
-    brand: "Aesop",
+    type: "STUDENT STORIES",
+    title: "Campus is its own comedy",
+    brand: "Student life",
     image:
       "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=85",
     className: "work-card--wide",
   },
   {
     number: "03",
-    type: "FILM · 2024",
-    title: "After the light",
-    brand: "Independent",
+    type: "SHORT-FORM SKITS",
+    title: "A familiar kind of funny",
+    brand: "Sketches",
     image:
       "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85",
     className: "work-card--portrait",
@@ -33,9 +33,9 @@ const work = [
 ];
 
 const stats = [
-  { value: "1.2M+", label: "community members" },
-  { value: "40+", label: "brand partners" },
-  { value: "18", label: "films & campaigns" },
+  { value: "21", label: "years young" },
+  { value: "20 Sep", label: "birthday" },
+  { value: "UNZA", label: "mining engineering" },
 ];
 
 export default function StatsAndWorks() {
@@ -43,20 +43,20 @@ export default function StatsAndWorks() {
     <section className="works-section section-pad" id="work" aria-labelledby="work-title">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">A few things in motion</p>
+          <p className="eyebrow">The person behind the punchlines</p>
           <h2 id="work-title">
-            Work that
+            Real life makes
             <br />
-            <span>moves people.</span>
+            <span>good comedy.</span>
           </h2>
         </div>
         <p className="section-aside">
-          Every story is a chance to make someone
-          <br className="desktop-break" /> feel a little more.
+          Short sketches, Zambian moments, and
+          <br className="desktop-break" /> a little campus-life chaos.
         </p>
       </div>
 
-      <div className="stats-row" aria-label="Selected career highlights">
+      <div className="stats-row" aria-label="About Arnold Shema Rukhina">
         {stats.map((stat, index) => (
           <motion.div
             className="stat"

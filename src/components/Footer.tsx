@@ -3,26 +3,28 @@ export default function Footer() {
     <footer className="footer-section" id="contact">
       <div className="footer-main page-gutter">
         <div>
-          <p className="eyebrow">Have a good one in mind?</p>
+          <p className="eyebrow">Catch the next sketch</p>
           <h2>
-            Let&apos;s create
+            Keep the
             <br />
-            <span>something.</span>
+            <span>laughs going.</span>
           </h2>
         </div>
         <div className="footer-contact">
-          <a className="footer-email" href="mailto:hello@marcuscole.studio">
-            hello@marcuscole.studio <span aria-hidden="true">↗</span>
+          <a
+            className="footer-email"
+            href="https://www.tiktok.com/@shema_comedy"
+            target="_blank"
+            rel="noreferrer"
+          >
+            TikTok · @shema_comedy <span aria-hidden="true">↗</span>
           </a>
-          <p>For partnerships, projects, and everything in between.</p>
+          <p>Follow Shema Comedy for skits, student stories, and Zambian humor.</p>
           <div className="footer-socials" aria-label="Social links">
-            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
-              Instagram ↗
+            <a href="https://www.facebook.com/search/top?q=shema%20comedy" target="_blank" rel="noreferrer">
+              Facebook ↗
             </a>
-            <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
-              YouTube ↗
-            </a>
-            <a href="https://www.tiktok.com/" target="_blank" rel="noreferrer">
+            <a href="https://www.tiktok.com/@shema_comedy" target="_blank" rel="noreferrer">
               TikTok ↗
             </a>
           </div>
@@ -30,10 +32,10 @@ export default function Footer() {
       </div>
       <div className="footer-bottom page-gutter">
         <a className="brand" href="#hero" aria-label="Back to top">
-          MC<span>.</span>
+          SC<span>.</span>
         </a>
-        <span>Independent by nature. Collaborative by choice.</span>
-        <span>© {new Date().getFullYear()} Marcus Cole</span>
+        <span>Comedy from everyday Zambian life.</span>
+        <span>© {new Date().getFullYear()} Shema Comedy</span>
       </div>
     </footer>
   );
