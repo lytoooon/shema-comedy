@@ -51,9 +51,11 @@ export default function Collaborations() {
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger);
-      if (!section.current || !ring.current) return;
+      const sectionElement = section.current;
+      const ringElement = ring.current;
+      if (!sectionElement || !ringElement) return;
 
-      const cards = gsap.utils.toArray<HTMLElement>(".collab-card", ring.current);
+      const cards = gsap.utils.toArray<HTMLElement>(".collab-card", ringElement);
       const radius = window.innerWidth < 700 ? 245 : 410;
 
       cards.forEach((card, index) => {
@@ -64,20 +66,24 @@ export default function Collaborations() {
         });
       });
 
-      gsap.to(ring.current, {
-        rotationY: 360,
-        rotationX: -8,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section.current,
-          start: "top top",
-          end: "+=1700",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.to(ringElement, {
+          rotationY: 360,
+          rotationX: -8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionElement,
+            scroller: sectionElement.closest(".feed-scroll"),
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        });
       });
+
+      return () => media.revert();
     },
     { scope: section },
   );
@@ -87,6 +93,7 @@ export default function Collaborations() {
       className="collab-section"
       id="collaborations"
       ref={section}
+      data-feed-panel
       aria-labelledby="collab-title"
     >
       <div className="collab-copy">

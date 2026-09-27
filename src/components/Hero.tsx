@@ -1,6 +1,11 @@
 export default function Hero() {
   return (
-    <section className="hero" id="hero" aria-labelledby="hero-title">
+    <section
+      className="hero feed-panel"
+      id="hero"
+      data-feed-panel
+      aria-labelledby="hero-title"
+    >
       <video
         className="hero__video"
         autoPlay
@@ -20,12 +25,12 @@ export default function Hero() {
       <div className="hero__content page-gutter">
         <p className="eyebrow hero__eyebrow">
           <span className="live-dot" />
-          Zambian comedian · Creator · UNZA student
+            Comedian · Creator · Student
         </p>
         <h1 id="hero-title">
-          SHEMA
+          Shema
           <br />
-          <span>COMEDY</span>
+          <span>Comedy</span>
         </h1>
         <div className="hero__bottom">
           <p className="hero__intro">

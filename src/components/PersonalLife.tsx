@@ -19,7 +19,12 @@ const moments = [
 
 export default function PersonalLife() {
   return (
-    <section className="life-section section-pad" id="life" aria-labelledby="life-title">
+    <section
+      className="life-section section-pad feed-panel"
+      id="life"
+      data-feed-panel
+      aria-labelledby="life-title"
+    >
       <div className="life-heading">
         <div>
           <p className="eyebrow">Comedy is one part of the story</p>

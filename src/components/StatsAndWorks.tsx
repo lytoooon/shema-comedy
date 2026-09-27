@@ -40,7 +40,12 @@ const stats = [
 
 export default function StatsAndWorks() {
   return (
-    <section className="works-section section-pad" id="work" aria-labelledby="work-title">
+    <section
+      className="works-section section-pad feed-panel"
+      id="work"
+      data-feed-panel
+      aria-labelledby="work-title"
+    >
       <div className="section-heading">
         <div>
           <p className="eyebrow">The person behind the punchlines</p>

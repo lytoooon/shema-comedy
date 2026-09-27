@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="footer-section" id="contact">
+    <footer className="footer-section feed-panel" id="contact" data-feed-panel>
       <div className="footer-main page-gutter">
         <div>
           <p className="eyebrow">Catch the next sketch</p>

@@ -1,5 +1,6 @@
 import Collaborations from "@/components/Collaborations";
 import Footer from "@/components/Footer";
+import FeedExperience from "@/components/FeedExperience";
 import Hero from "@/components/Hero";
 import NavBar from "@/components/NavBar";
 import PersonalLife from "@/components/PersonalLife";
@@ -9,13 +10,13 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <main>
+      <FeedExperience>
         <Hero />
         <StatsAndWorks />
         <Collaborations />
         <PersonalLife />
-      </main>
-      <Footer />
+        <Footer />
+      </FeedExperience>
     </>
   );
 }
