@@ -380,7 +380,7 @@
         z-index: 1;
         width: 100%;
         margin: clamp(48px, 8vh, 100px) 0 0 -0.06em;
-        color: var(--ink);
+        color: var(--red);
         font-size: calc(clamp(82px, 19.5vw, 302px) + 5px);
         letter-spacing: -0.095em;
         line-height: 0.72;
@@ -1094,15 +1094,16 @@
         }
 
         .hero-title {
-          z-index: 3;
-          margin-top: 8px;
-          font-size: calc(clamp(70px, 19vw, 144px) + 5px);
+          z-index: 1;
+          width: 100vw;
+          margin: clamp(250px, 36svh, 340px) 0 0 calc(var(--page-gutter) * -1);
+          font-size: calc(clamp(70px, 21vw, 144px) + 5px);
         }
 
         .hero-portrait {
           z-index: 2;
           bottom: 0;
-          width: min(180vw, 740px);
+          width: 400px;
           height: min(150svh, 1200px);
         }
 
@@ -1209,12 +1210,12 @@
         }
 
         .hero-title {
-          font-size: calc(clamp(64px, 18.8vw, 90px) + 5px);
-          letter-spacing: -0.09em;
+          font-size: calc(clamp(70px, 21vw, 96px) + 5px);
+          letter-spacing: -0.12em;
         }
 
         .hero-portrait {
-          width: min(180vw, 740px);
+          width: 400px;
           height: min(150svh, 1200px);
         }
 
