@@ -1,0 +1,29 @@
+---
+import { aboutPhotos } from "../data/media.js";
+---
+
+<section class="chapter chapter-about" id="about" aria-labelledby="about-title">
+  <div class="about-layout">
+    <div>
+      <p class="chapter-kicker" data-reveal="left" data-motion="whip">02 / About me</p>
+      <h2 class="about-copy" id="about-title" data-reveal="up" data-motion="scatter">
+        I’m 21, studying Mining Engineering at the University of Zambia.
+        <em>I make lifestyle and comedy content from the things I see and live every day.</em>
+      </h2>
+      <p class="microcopy about-support" data-reveal="right" data-motion="fold">
+        I’m Shema, a creator from Lusaka. I share everyday stories that make people laugh and give brands a genuine
+        way to connect with my audience.
+      </p>
+      <a class="about-read-more" href="#contact">Read more...</a>
+    </div>
+    <div class="about-orbit" aria-label="Photos of Shema">
+      {
+        aboutPhotos.map((src) => (
+          <figure class="about-photo">
+            <img src={src} alt="" loading="lazy" />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

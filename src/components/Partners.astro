@@ -1,0 +1,40 @@
+---
+import { partners, partnerShapes } from "../data/media.js";
+import { PARTNER_SPEED } from "../scripts/config.js";
+
+// Three rows, each a pair of identical sets so the belt loops without a gap.
+const rows = [0, 1, 2];
+const sets = [0, 1];
+---
+
+<section class="chapter chapter-partners" id="partnerships" aria-labelledby="partners-title">
+  <div>
+    <p class="chapter-kicker" data-reveal="left" data-motion="whip">07 / Past partnerships</p>
+    <h2 class="partners-heading" id="partners-title" data-reveal="up" data-motion="scatter">Good company I’ve kept.</h2>
+  </div>
+  <div class="partner-marquee" id="partner-marquee" aria-label="Past brand partnerships">
+    {
+      rows.map((row) => (
+        <div class="partner-row" aria-hidden="true" style={`--marquee-duration:${PARTNER_SPEED + row * 7}s`}>
+          <div class="partner-belt">
+            {sets.map(() => (
+              <div class="partner-set">
+                {partners.map((partner) => (
+                  <span class="partner-mark" aria-hidden="true">
+                    {partner.iconUrl ? (
+                      <img class="partner-symbol" src={partner.iconUrl} alt="" loading="lazy" />
+                    ) : (
+                      <svg class="partner-symbol" viewBox="0 0 48 48" aria-hidden="true" set:html={partnerShapes[partner.icon]} />
+                    )}
+                    <span class="partner-name">{partner.label}</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <p class="partners-note" data-reveal="right" data-motion="fold">I’m proud to have created alongside these brands.</p>
+</section>

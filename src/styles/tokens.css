@@ -1,0 +1,26 @@
+:root {
+  color-scheme: light;
+  --white: #ffffff;
+  --paper: #f5f5f5;
+  --gray: #d0d0d0;
+  --muted: #5c5c5c;
+  --ink: #161616;
+  --red: #e10600;
+  --brown: #73513d;
+  --font-display: "MuseoModerno", "Arial Black", sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
+  --page-gutter: clamp(22px, 6.4vw, 104px);
+  --space-section: clamp(120px, 20vh, 260px);
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page-gutter: 24px;
+    --space-section: clamp(115px, 18vh, 180px);
+  }
+}

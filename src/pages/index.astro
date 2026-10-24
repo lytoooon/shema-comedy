@@ -1,0 +1,57 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Reach from "../components/Reach.astro";
+import About from "../components/About.astro";
+import Gallery from "../components/Gallery.astro";
+import Results from "../components/Results.astro";
+import Offers from "../components/Offers.astro";
+import Partners from "../components/Partners.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import { campaignMedia, momentsMedia } from "../data/media.js";
+---
+
+<Base>
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+  <Header />
+  <main id="story">
+    <Hero />
+    <Reach />
+    <About />
+    <Gallery
+      id="work"
+      sectionClass="chapter-work"
+      kicker="03 / Campaign work"
+      kickerMotion="whip"
+      title="Then they hit play."
+      titleMotion="fold"
+      note="I make brand stories entertaining, relatable, and worth remembering."
+      noteMotion="spin"
+      label="Scroll to reveal"
+      stageLabel="Campaign work gallery"
+      layout="stack"
+      items={campaignMedia}
+    />
+    <Results />
+    <Offers />
+    <Gallery
+      id="moments"
+      sectionClass="chapter-road"
+      kicker="06 / Out there"
+      kickerMotion="fold"
+      title="Moments from my life."
+      titleMotion="scatter"
+      note="A few places, people, and everyday moments I’ve shared along the way."
+      noteMotion="whip"
+      label="Scroll or swipe to travel"
+      stageLabel="Lifestyle moments gallery"
+      layout="strip"
+      items={momentsMedia}
+    />
+    <Partners />
+    <Contact />
+  </main>
+  <Footer />
+</Base>

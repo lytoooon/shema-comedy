@@ -1,0 +1,33 @@
+---
+import { site } from "../data/site.js";
+const mail = `mailto:${site.email}`;
+---
+
+<section class="chapter chapter-contact" id="contact" aria-labelledby="contact-title">
+  <div>
+    <p class="chapter-kicker" data-reveal="left" data-motion="whip">08 / Your move</p>
+    <h2 class="contact-heading" id="contact-title" data-reveal="up" data-motion="scatter">Your brand. My audience.</h2>
+  </div>
+  <div class="contact-lower">
+    <p class="contact-invite" data-reveal="left" data-motion="fold">
+      Have a brief or a good idea? Let’s make something people want to watch.
+    </p>
+    <div class="contact-details" data-reveal="right" data-motion="spin">
+      <div>
+        <h3>Bookings</h3>
+        {site.bookings.map((item) => <a href={mail}>{item}</a>)}
+        <a class="contact-email" href={mail}>{site.email}</a>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        {
+          site.socials.map((s) => (
+            <a class="text-link" href={s.url} target="_blank" rel="noreferrer">
+              {s.label} ↗
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

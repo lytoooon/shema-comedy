@@ -1,0 +1,26 @@
+---
+const offers = [
+  { title: "Brand skits", reveal: "left", motion: "fold" },
+  { title: "Live hosting", reveal: "right", motion: "spin" },
+  { title: "Ambassador deals", reveal: "left", motion: "scatter" },
+  { title: "Appearances", reveal: "right", motion: "whip" },
+];
+---
+
+<section class="chapter chapter-offers" id="ways-to-work" aria-labelledby="offers-title">
+  <div>
+    <p class="chapter-kicker" data-reveal="left" data-motion="spin">05 / Partnerships</p>
+    <h2 class="chapter-title" id="offers-title" data-reveal="up" data-motion="whip">Ways we can work together.</h2>
+  </div>
+  <div class="offer-list">
+    {
+      offers.map((offer, i) => (
+        <article class="offer" data-reveal={offer.reveal} data-motion={offer.motion}>
+          <span class="offer-number">{String(i + 1).padStart(2, "0")}</span>
+          <h3>{offer.title}</h3>
+          <span class="offer-mark" aria-hidden="true" />
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,30 @@
+---
+// Placeholder numbers until real stats are available.
+const stats = [
+  { value: "00K", label: "People following me" },
+  { value: "00M", label: "Views each month" },
+  { value: "00%", label: "Engagement with my content" },
+];
+---
+
+<section class="chapter chapter-reach" id="reach" aria-labelledby="reach-title">
+  <div class="reach-heading">
+    <div>
+      <p class="chapter-kicker" data-reveal="left">01 / Reach</p>
+      <h2 class="chapter-title" id="reach-title" data-reveal="up">Every story starts with real life.</h2>
+    </div>
+    <p class="microcopy reach-note" data-reveal="right">
+      I’m building an audience that keeps growing with every story I share.
+    </p>
+  </div>
+  <div class="stats" aria-label="Audience reach placeholders">
+    {
+      stats.map((stat) => (
+        <div class="stat" data-reveal="up">
+          <strong class="stat-value">{stat.value}</strong>
+          <span class="stat-label">{stat.label}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>

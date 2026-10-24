@@ -1,0 +1,22 @@
+.chapter-result {
+  overflow: hidden;
+}
+
+.result-statement {
+  max-width: 13ch;
+  font-size: calc(clamp(52px, 10vw, 154px) + 5px);
+}
+
+.result-statement span {
+  display: block;
+}
+
+.result-statement span:last-child {
+  color: var(--red);
+}
+
+.result-aside {
+  align-self: flex-end;
+  max-width: 25ch;
+  margin: clamp(45px, 8vh, 100px) 5vw 0 0;
+}

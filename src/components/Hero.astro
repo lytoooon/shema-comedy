@@ -1,0 +1,41 @@
+---
+import { heroPhoto } from "../data/media.js";
+---
+
+<section class="chapter hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-topline" data-reveal="up" data-motion="whip">
+    <span>Lifestyle &amp; comedy creator</span>
+    <span>I’m based in Lusaka, Zambia</span>
+  </div>
+  <svg class="hero-orbit" viewBox="0 0 800 800" aria-hidden="true">
+    <circle cx="400" cy="400" r="314"></circle>
+    <circle class="orbit-dash" cx="400" cy="400" r="270"></circle>
+    <ellipse cx="400" cy="400" rx="340" ry="150" transform="rotate(-24 400 400)"></ellipse>
+    <ellipse cx="400" cy="400" rx="340" ry="150" transform="rotate(28 400 400)"></ellipse>
+    <path d="M102 374a298 298 0 0 1 193-254"></path>
+    <path class="orbit-red" d="M639 556a278 278 0 0 1-181 137"></path>
+    <circle class="orbit-node" cx="636" cy="230" r="5"></circle>
+    <circle class="orbit-node" cx="183" cy="571" r="4"></circle>
+  </svg>
+  <h1 class="hero-title" id="hero-title">
+    <span>SHEMA</span>
+    <span>COMEDY</span>
+  </h1>
+  <figure class="hero-portrait" data-reveal="up" data-motion="portrait">
+    <div class="portrait-window">
+      <img src={heroPhoto} alt="Portrait of me, Shema" fetchpriority="high" />
+    </div>
+    <span class="portrait-stamp" aria-hidden="true">Lusaka · Zambia · 21</span>
+    <a class="hero-contact-link" href="#contact">Let’s talk</a>
+  </figure>
+  <p class="hero-caption" data-reveal="right" data-motion="fold">
+    I make everyday life funny. Here’s what happens next.
+    <strong>
+      <a class="scroll-cue" href="#reach" aria-label="Scroll to meet my audience">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4v15M6 13l6 6 6-6"></path>
+        </svg>
+      </a>
+    </strong>
+  </p>
+</section>

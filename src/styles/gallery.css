@@ -1,0 +1,156 @@
+.chapter-work,
+.chapter-road {
+  gap: clamp(52px, 9vh, 110px);
+}
+
+.gallery-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 26px;
+}
+
+.gallery-heading .chapter-title {
+  max-width: 12ch;
+}
+
+.gallery-stage {
+  position: relative;
+  width: calc(100% + var(--page-gutter) * 2);
+  height: 100svh;
+  min-height: 520px;
+  margin-left: calc(var(--page-gutter) * -1);
+  overflow: hidden;
+  background: var(--paper);
+  touch-action: pan-y;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .gallery-stage {
+    touch-action: none;
+    overscroll-behavior: contain;
+  }
+}
+
+.gallery-stage.is-static {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.gallery-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+.gallery-track.is-static {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+.gallery-track.is-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.media-slot {
+  position: relative;
+  display: flex;
+  width: 100vw;
+  height: 100%;
+  flex: 0 0 100vw;
+  align-items: stretch;
+  justify-content: stretch;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.gallery-track.is-stack .media-slot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-track.is-static .media-slot {
+  height: 100svh;
+  min-height: 440px;
+  margin-bottom: 18px;
+}
+
+.media-slot::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.38);
+  content: "";
+  pointer-events: none;
+}
+
+.media-slot img,
+.media-slot video {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 100%;
+  object-fit: cover;
+}
+
+.media-caption {
+  position: absolute;
+  right: clamp(24px, 6vw, 90px);
+  bottom: clamp(28px, 6vh, 76px);
+  left: clamp(24px, 6vw, 90px);
+  z-index: 2;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--white);
+  font: 600 clamp(28px, 6vw, 84px)/1.05 var(--font-display);
+  letter-spacing: -0.05em;
+}
+
+.media-caption small {
+  color: rgba(255, 255, 255, 0.82);
+  font: 500 clamp(16px, 2vw, 22px)/1.3 var(--font-body);
+  letter-spacing: 0;
+}
+
+.gallery-progress {
+  position: absolute;
+  right: var(--page-gutter);
+  bottom: 24px;
+  z-index: 2;
+  color: var(--muted);
+  font: 500 12px/1 var(--font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .gallery-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .gallery-stage {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-stage {
+    height: 82svh;
+    min-height: 440px;
+  }
+  .chapter-work .gallery-stage {
+    height: 100svh;
+    min-height: 100svh;
+  }
+}
