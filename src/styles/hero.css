@@ -219,8 +219,10 @@
     min-height: 0;
   }
   .hero-title {
-    font-size: calc(clamp(70px, 21vw, 96px) + 5px);
+    font-size: calc(clamp(70px, 25vw, 140px) + 5px);
     letter-spacing: -0.12em;
+    left: -1.5%;
+    transform: translate(0, -90px);
   }
  @media (max-width: 480px) {
   .hero-portrait {
@@ -238,6 +240,7 @@
     width: 100%;
     height: auto;
     object-fit: contain;
+    filter: grayscale(15%) contrast(1.1);
   }
 }
   
