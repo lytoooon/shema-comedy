@@ -8,25 +8,30 @@ import { heroPhoto } from "../data/media.js";
     <span>I’m based in Lusaka, Zambia</span>
   </div>
 
-  <h1 class="hero-title" id="hero-title">
-    <span>SHEMA</span>
-    <span>COMEDY</span>
-  </h1>
+ <h1 class="hero-title" id="hero-title" aria-label="Shema Comedy">
+  <svg viewBox="0 0 400 210" aria-hidden="true" focusable="false">
+    <defs>
+      <path id="hero-curve-1" d="M -100 120 Q 200 60 500 120" />
+      <path id="hero-curve-2" d="M -100 201 Q 200 141 500 201" />
+    </defs>
+    <text text-anchor="middle">
+      <textPath href="#hero-curve-1" startOffset="49%">SHEMA</textPath>
+    </text>
+    <text text-anchor="middle">
+      <textPath href="#hero-curve-2" startOffset="49%">COMEDY</textPath>
+    </text>
+  </svg>
+</h1>
   <figure class="hero-portrait" data-reveal="up" data-motion="portrait">
     <div class="portrait-window">
       <img src={heroPhoto} alt="Portrait of me, Shema" fetchpriority="high" />
     </div>
     <span class="portrait-stamp" aria-hidden="true">Lusaka · Zambia · 21</span>
-    <a class="hero-contact-link" href="#contact">Let’s talk</a>
   </figure>
+  <div class="hero-bio">
   <p class="hero-caption" data-reveal="right" data-motion="fold">
     I make everyday life funny. Here’s what happens next.
-    <strong>
-      <a class="scroll-cue" href="#reach" aria-label="Scroll to meet my audience">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 4v15M6 13l6 6 6-6"></path>
-        </svg>
-      </a>
-    </strong>
   </p>
+  <a class="hero-contact-link" href="#contact">Let’s talk</a>
+  </div>
 </section>
