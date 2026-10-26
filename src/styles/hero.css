@@ -6,42 +6,7 @@
   padding-bottom: 0;
 }
 
-.hero-orbit {
-  position: absolute;
-  z-index: 0;
-  top: 31%;
-  left: 50%;
-  width: min(78vw, 900px);
-  height: auto;
-  transform: translateX(-50%);
-  overflow: visible;
-  pointer-events: none;
-  display: none;
-}
 
-.hero-orbit circle,
-.hero-orbit ellipse,
-.hero-orbit path {
-  fill: none;
-  stroke: var(--gray);
-  stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
-}
-
-.hero-orbit .orbit-red {
-  stroke: var(--red);
-  stroke-width: 2;
-}
-
-.hero-orbit .orbit-dash {
-  stroke-dasharray: 2 10;
-  stroke-linecap: round;
-}
-
-.hero-orbit .orbit-node {
-  fill: var(--red);
-  stroke: none;
-}
 
 .hero-topline {
   position: relative;
@@ -257,10 +222,25 @@
     font-size: calc(clamp(70px, 21vw, 96px) + 5px);
     letter-spacing: -0.12em;
   }
+ @media (max-width: 480px) {
   .hero-portrait {
+    left: 0;
     width: 100vw;
-    height: 100svh;
+    height: auto;
+    min-height: 0;
+    transform: none;
   }
+  .portrait-window {
+    position: relative;
+    inset: auto;
+  }
+  .hero-portrait img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+  
   .hero-contact-link {
     bottom: 17%;
     left: 50%;
