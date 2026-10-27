@@ -4,7 +4,7 @@ export const site = {
   description:
     "I'm Shema, a 21-year-old University of Zambia mining engineering student and lifestyle and comedy content creator.",
   themeColor: "#FFFFFF",
-  email: "name@email.com",
+  number: "+260777320048",
   nav: [
     { label: "About me", href: "#about" },
     { label: "Work", href: "#work" },
@@ -12,8 +12,7 @@ export const site = {
   ],
   bookings: ["Brand deals", "Live shows", "Appearances"],
   socials: [
-    { label: "Instagram", url: "https://www.instagram.com/" },
-    { label: "TikTok", url: "https://www.tiktok.com/" },
-    { label: "YouTube", url: "https://www.youtube.com/" },
+    { label: "TikTok", url: "https://www.tiktok.com/@shema_comedy?is_from_webapp=1&sender_device=pc" },
+    { label: "Facebook", url: "https://web.facebook.com/profile.php?id=100085322169806&sk=about" },
   ],
 };
