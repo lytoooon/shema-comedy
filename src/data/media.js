@@ -15,10 +15,10 @@ export const campaignMedia = [
 ];
 
 export const momentsMedia = [
-  { src: asset("5.jpeg"), caption: "Out and about" },
-  { src: asset("6.jpeg"), caption: "A moment from my day" },
-  { src: asset("1.jpeg"), caption: "My everyday style" },
-  { src: asset("3.jpeg"), caption: "Comedy in the little things" },
+  { src: asset("life1.jpeg"), caption: "Out and about" },
+  { src: asset("life2.jpeg"), caption: "A moment from my day" },
+  { src: asset("life3.jpeg"), caption: "My everyday style" },
+  { src: asset("life4.jpeg"), caption: "Comedy in the little things" },
 ];
 
 // Either `icon` (a drawn shape from partnerShapes) or `iconUrl`.
