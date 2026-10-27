@@ -5,7 +5,7 @@
 .chapter-contact {
   min-height: 170svh;
   justify-content: space-between;
-  margin-bottom: 25svh;
+  margin-bottom: 19svh;
 }
 
 .contact-heading {
@@ -71,6 +71,9 @@
 }
 
 @media (max-width: 480px) {
+  .chapter-contact {
+    margin-bottom: 0svh;
+  }
   .contact-details {
     grid-template-columns: 1fr 1fr;
     gap: 18px;
