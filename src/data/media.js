@@ -8,10 +8,10 @@ export const aboutPhotos = ["life1.jpg", "life2.jpg", "life3.png", "life4.jpg"].
 
 // Each gallery shows its first four items.
 export const campaignMedia = [
-  { src: asset("1.jpeg"), caption: "My everyday style" },
-  { src: asset("2.jpeg"), caption: "Life and the people around me" },
-  { src: asset("3.jpeg"), caption: "A little comedy, a lot of character" },
-  { src: asset("4.jpeg"), caption: "My off-duty look" },
+  { src: asset("c1.jpg"), caption: "My everyday style" },
+  { src: asset("c2.jpg"), caption: "Life and the people around me" },
+  { src: asset("c3.jpg"), caption: "A little comedy, a lot of character" },
+  { src: asset("c4.jpg"), caption: "My off-duty look" },
 ];
 
 export const momentsMedia = [
