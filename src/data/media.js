@@ -4,7 +4,7 @@ const asset = (file) => `${base}/assets/${file}`;
 
 export const heroPhoto = asset("shema-portrait.png");
 
-export const aboutPhotos = ["2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg"].map(asset);
+export const aboutPhotos = ["life1.jpeg", "life2.jpeg", "life3.jpeg", "life4.jpeg"].map(asset);
 
 // Each gallery shows its first four items.
 export const campaignMedia = [
