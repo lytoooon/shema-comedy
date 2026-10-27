@@ -141,7 +141,27 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-
+@media (min-width: 760px) {
+  .hero-bio {
+    width: 100vw;
+  }
+  .hero-caption {
+    top: 5svh;
+    left: -11vw;
+    width: 37ch;
+    font-size: 18px;
+  }
+  .hero-contact-link {
+    left: 25vw;
+    background-color: var(--red);
+    color: var(--white);
+    border-radius: 10px;
+  }
+  .portrait-stamp {
+    left: -29vw;
+    top: 19svh;
+  }
+}
 
 
 @media (max-width: 760px) {
@@ -151,10 +171,7 @@
     padding-top: 96px;
     overflow: clip;
   }
-  .hero-orbit {
-    top: 42%;
-    width: 130vw;
-  }
+  
   .hero-topline {
     display: none;
   }
@@ -205,6 +222,8 @@
   .hero {
     height: 100svh;
     min-height: 0;
+    top: 1px;
+    box-shadow: 0px 0px 50px 40px rgba(22, 22, 22);
   }
   .hero-title {
     font-size: calc(clamp(70px, 25vw, 140px) + 5px);
@@ -224,6 +243,7 @@
     inset: auto;
   }
   .hero-portrait img {
+    position: relative;
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -250,6 +270,10 @@
     /* bottom: max(12px, env(safe-area-inset-bottom)); */
     width: min(84vw, 340px);
     font-size: 15px;
+    background-color: rgba(22, 22, 22, 0.631);
+  color: var(--white);
+  padding: 18px 20px;
+  box-shadow: 0px 20px 40px 60px rgba(22, 22, 22, 0.631);
   }
   .hero-topline span:last-child {
     text-align: right;

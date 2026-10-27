@@ -59,10 +59,11 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: 10px;
   background: var(--ink);
   color: var(--white);
   cursor: pointer;
+  gap: 15px;
 }
 
 .menu-icon,
@@ -70,8 +71,9 @@
 .menu-icon::after {
   display: block;
   width: 19px;
-  height: 2px;
-  background: var(--red);
+  height: 4px;
+  background: var(--white);
+  
   transition: transform 180ms ease;
 }
 

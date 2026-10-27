@@ -1,5 +1,5 @@
 export const site = {
-  name: "Shema Comedy",
+  name: "Shema",
   title: "Shema Comedy — Zambian Content Creator.",
   description:
     "I'm Shema, a 21-year-old University of Zambia mining engineering student and lifestyle and comedy content creator.",

@@ -82,9 +82,11 @@ img.partner-symbol {
 
 .partners-note {
   max-width: 32ch;
-  margin: 0;
-  color: var(--muted);
+    margin: 0;
   font-size: 18px;
+  background-color: rgba(22, 22, 22, 0.9);
+  color: var(--white);
+  padding: 18px 20px;
 }
 
 @keyframes partner-left {

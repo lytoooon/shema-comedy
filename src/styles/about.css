@@ -41,11 +41,9 @@
   align-items: center;
   gap: 10px;
   margin-top: 8px;
-  color: var(--red);
   font: 700 16px/1.2 var(--font-display);
   text-decoration-thickness: 1px;
   text-underline-offset: 5px;
-  text-transform: uppercase;
 }
 
 .about-read-more::after {
@@ -83,18 +81,18 @@
 
 .about-photo:nth-child(1) {
   top: 4%;
-  left: 14%;
+  left: -10%;
   z-index: 2;
 }
 
 .about-photo:nth-child(2) {
   top: 25%;
-  right: 0;
+  right:-20%;
   z-index: 1;
 }
 
 .about-photo:nth-child(3) {
-  bottom: 0;
+  bottom: -19%;
   left: 4%;
   z-index: 3;
 }
