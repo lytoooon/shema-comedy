@@ -4,6 +4,8 @@ export const REVEAL_DISTANCE = 150; // px travelled before content settles
 export const TRANSITION_TURN = 18; // higher = stronger rotations
 export const FLUID_SPEED = 0.05; // background drift speed
 export const FLUID_OPACITY = 0.56; // background ink strength
+export const FLUID_STREAK_STRETCH = 2.0;
+export const FLUID_STREAK_BOOST = 0.6;
 export const PARTNER_SPEED = 34; // seconds per marquee loop (first row)
 export const PARTNER_EDGE_SCALE = 0.68; // logo size at the screen edges
 export const REVEAL_START = "top bottom";

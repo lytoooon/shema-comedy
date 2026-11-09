@@ -1,5 +1,5 @@
 import { REDUCED_MOTION } from "../motion.js";
-import { FLUID_SPEED, FLUID_OPACITY } from "../config.js";
+import { FLUID_SPEED, FLUID_OPACITY, FLUID_STREAK_STRETCH, FLUID_STREAK_BOOST } from "../config.js";
 import { vertexSource, fragmentSource as buildFragment } from "./shaders.js";
 
 export function createFluidBackground() {
@@ -28,7 +28,7 @@ export function createFluidBackground() {
   }
 
   const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
-  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, buildFragment(FLUID_SPEED, FLUID_OPACITY));
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, buildFragment(FLUID_SPEED, FLUID_OPACITY, FLUID_STREAK_STRETCH));
   if (!vertexShader || !fragmentShader) return;
 
   const program = gl.createProgram();
@@ -62,6 +62,7 @@ export function createFluidBackground() {
   const resolution = gl.getUniformLocation(program, "u_resolution");
   const time = gl.getUniformLocation(program, "u_time");
   const scrollOffset = gl.getUniformLocation(program, "u_scroll");
+  const speedUniform = gl.getUniformLocation(program, "u_speed");
   let pixelRatio = 1;
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -76,15 +77,28 @@ export function createFluidBackground() {
 
   let frameRequest = 0;
   let startTime = 0;
+  let lastScrollY = window.scrollY;
+  let scrollSpeed = 0;
+  let boostedOffset = 0;
 
   function drawFluid(timestamp) {
-    if (document.hidden) return;
-    if (!startTime) startTime = timestamp;
-    gl.uniform1f(time, (timestamp - startTime) / 1000);
-    gl.uniform1f(scrollOffset, window.scrollY * pixelRatio);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    frameRequest = window.requestAnimationFrame(drawFluid);
-  }
+  if (document.hidden) return;
+  if (!startTime) startTime = timestamp;
+
+  const y = window.scrollY;
+  const delta = Math.min(Math.abs(y - lastScrollY), 200);
+  lastScrollY = y;
+
+  const target = Math.min(delta / 60, 1);
+  scrollSpeed += (target - scrollSpeed) * 0.08;
+  boostedOffset += delta * scrollSpeed * FLUID_STREAK_BOOST;
+
+  gl.uniform1f(time, (timestamp - startTime) / 1000);
+  gl.uniform1f(scrollOffset, (y + boostedOffset) * pixelRatio);
+  gl.uniform1f(speedUniform, scrollSpeed);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+  frameRequest = window.requestAnimationFrame(drawFluid);
+}
 
   function syncFluidVisibility() {
     if (document.hidden) {

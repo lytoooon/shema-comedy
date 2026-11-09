@@ -7,12 +7,13 @@ export const vertexSource = `
           }
         `;
 
-export const fragmentSource = (speed, opacity) => `
+export const fragmentSource = (speed, opacity, stretch) => `
           precision mediump float;
           varying vec2 v_uv;
           uniform vec2 u_resolution;
           uniform float u_time;
           uniform float u_scroll;
+          uniform float u_speed;
           float hash(vec2 p) {
             return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
           }
@@ -36,6 +37,7 @@ export const fragmentSource = (speed, opacity) => `
           void main() {
             float time = u_time * ${speed.toFixed(2)};
             vec2 p = v_uv * vec2(u_resolution.x / u_resolution.y, 1.0) * 3.0;
+            p.y = (p.y - 1.5) / (1.0 + u_speed * ${stretch.toFixed(2)}) + 1.5;
             p.y += (u_scroll / u_resolution.y) * 3.0;
             vec2 flow = vec2(fbm(p + vec2(0.0, time)), fbm(p + vec2(4.4, -time * 0.73)));
             float field = fbm(p + flow * 2.1 + vec2(-time * 0.55, time * 0.31));
