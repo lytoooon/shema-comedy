@@ -16,6 +16,6 @@ export function startSmoothScroll() {
   });
 
   lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.add((time) => lenis.raf(time * 100));
   gsap.ticker.lagSmoothing(0);
 }
