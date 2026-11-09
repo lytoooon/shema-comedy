@@ -4,21 +4,21 @@ const asset = (file) => `${base}/assets/${file}`;
 
 export const heroPhoto = asset("shema-portrait.png");
 
-export const aboutPhotos = ["2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg"].map(asset);
+export const aboutPhotos = ["life1.jpg", "life2.jpg", "life3.png", "life4.jpg"].map(asset);
 
 // Each gallery shows its first four items.
 export const campaignMedia = [
-  { src: asset("1.jpeg"), caption: "My everyday style" },
-  { src: asset("2.jpeg"), caption: "Life and the people around me" },
-  { src: asset("3.jpeg"), caption: "A little comedy, a lot of character" },
-  { src: asset("4.jpeg"), caption: "My off-duty look" },
+  { src: asset("c1.jpg"), caption: "My everyday style" },
+  { src: asset("c2.jpg"), caption: "Life and the people around me" },
+  { src: asset("c3.jpg"), caption: "A little comedy, a lot of character" },
+  { src: asset("c4.jpg"), caption: "My off-duty look" },
 ];
 
 export const momentsMedia = [
-  { src: asset("5.jpeg"), caption: "Out and about" },
-  { src: asset("6.jpeg"), caption: "A moment from my day" },
-  { src: asset("1.jpeg"), caption: "My everyday style" },
-  { src: asset("3.jpeg"), caption: "Comedy in the little things" },
+  { src: asset("life1.jpg"), caption: "Out and about" },
+  { src: asset("life2.jpg"), caption: "A moment from my day" },
+  { src: asset("life3.png"), caption: "My everyday style" },
+  { src: asset("life4.jpg"), caption: "Comedy in the little things" },
 ];
 
 // Either `icon` (a drawn shape from partnerShapes) or `iconUrl`.
