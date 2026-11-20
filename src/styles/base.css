@@ -1,3 +1,5 @@
+/* Reset, page defaults and typography. */
+
 *,
 *::before,
 *::after {
@@ -5,25 +7,40 @@
 }
 
 html {
-  min-width: 320px;
-  background: var(--white);
-  overflow-x: clip;
-  scroll-behavior: auto;
-  scrollbar-width: none;
+  -webkit-text-size-adjust: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  scroll-padding-top: var(--header-h);
+  scrollbar-color: var(--ink) var(--paper);
+  scrollbar-width: thin;
 }
 
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none;
+html.menu-open {
+  overflow: hidden;
 }
 
 body {
-  min-width: 320px;
+  min-width: 20rem;
   margin: 0;
   overflow-x: clip;
-  background: var(--white);
-  color: var(--ink);
-  font: 500 20px/1.6 var(--font-body);
+  background: var(--paper);
+  font: 400 var(--text-base) / 1.6 var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  counter-reset: section;
+}
+
+/* Fine film grain over the whole page, for a printed, tactile feel. */
+body::after {
+  position: fixed;
+  z-index: var(--z-grain);
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  content: "";
+  opacity: 0.09;
+  pointer-events: none;
 }
 
 main {
@@ -31,105 +48,73 @@ main {
   z-index: 1;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+figure {
+  margin: 0;
+}
+
 img,
+svg,
 video {
   display: block;
   max-width: 100%;
 }
 
-a {
-  color: inherit;
+img {
+  height: auto;
 }
 
-button,
 a {
+  color: inherit;
   -webkit-tap-highlight-color: transparent;
 }
 
-.chapter {
-  position: relative;
-  display: flex;
-  min-height: 145svh;
-  flex-direction: column;
-  justify-content: center;
-  padding: var(--space-section) var(--page-gutter);
-  isolation: isolate;
+button {
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.chapter-kicker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 22px;
-  color: var(--muted);
-  font: 500 12px/1.2 var(--font-display);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+/* `*highlighted*` words from content.js */
+:where(h1, h2, h3) em {
+  color: var(--red);
+  font-style: normal;
 }
 
-.chapter-kicker::before {
-  width: 27px;
-  height: 2px;
+::selection {
   background: var(--red);
-  content: "";
+  color: var(--paper);
 }
 
-h1,
-h2,
-h3,
-.display {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 0.94;
-}
-
-.chapter-title {
-  max-width: 12ch;
-  font-size: calc(clamp(46px, 8.4vw, 132px) + 5px);
-}
-
-.lede {
-  max-width: 31ch;
-  font-size: clamp(21px, 2.3vw, 32px);
-  line-height: 1.5;
-}
-
-.microcopy {
-  color: var(--muted);
-  font-size: 18px;
-  line-height: 1.5;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  clip-path: inset(50%);
-}
-
-a:focus-visible,
-button:focus-visible {
+:focus-visible {
   outline: 2px solid var(--red);
-  outline-offset: 5px;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-@media (max-width: 760px) {
-  body {
-    font-size: 19px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
+[tabindex="-1"]:focus {
+  outline: none;
 }

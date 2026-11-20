@@ -1,0 +1,254 @@
+/* Shared building blocks used by several sections. */
+
+/* ---------- Layout ---------- */
+
+.section {
+  position: relative;
+  padding: var(--section-space) var(--gutter);
+}
+
+.section--stage {
+  background: var(--stage);
+  color: var(--on-stage);
+}
+
+/* Full-width sections (pinned galleries): only the heading keeps the side gutters. */
+.section--bleed {
+  padding-inline: 0;
+}
+
+.section--bleed > .section-head {
+  padding-inline: var(--gutter);
+}
+
+/* Kicker + title on the left, note on the right. */
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1.5rem 3rem;
+  margin-bottom: clamp(3rem, 8vh, 6rem);
+}
+
+.section-head .kicker {
+  grid-column: 1 / -1;
+}
+
+/* "01 / Reach": the number is counted automatically, so sections can be reordered. */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1.25rem;
+  color: var(--muted);
+  font: 500 var(--text-xs) / 1.2 var(--font-display);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  counter-increment: section;
+}
+
+.kicker::before {
+  color: var(--red-text);
+  font-weight: 700;
+  content: counter(section, decimal-leading-zero) " /";
+}
+
+.section--stage .kicker {
+  color: var(--on-stage-muted);
+}
+
+.section--stage .kicker::before {
+  color: var(--red);
+}
+
+.title {
+  max-width: 13ch;
+  font-size: var(--text-3xl);
+}
+
+.note {
+  max-width: 30ch;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.section--stage .note {
+  color: var(--on-stage-muted);
+}
+
+@media (width < 760px) {
+  .section-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-hover-bg: var(--red);
+  --btn-hover-fg: var(--paper);
+  position: relative;
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  padding: 0 1.6rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 0;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  font: 700 0.875rem / 1 var(--font-display);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.45s var(--ease-out);
+}
+
+/* Fill that rises on hover */
+.btn::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--btn-hover-bg);
+  content: "";
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--btn-hover-fg);
+}
+
+.btn:hover::before {
+  transform: none;
+}
+
+.btn--primary {
+  --btn-bg: var(--red);
+  --btn-hover-bg: var(--ink);
+}
+
+.btn--light {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: currentColor;
+  --btn-hover-bg: var(--ink);
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
+.btn--lg {
+  min-height: 4.25rem;
+  padding: 0 2.25rem;
+  font-size: 1rem;
+}
+
+.btn--sm {
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.btn-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.btn:hover .btn-icon {
+  transform: translateX(0.25em) rotate(-45deg);
+}
+
+/* ---------- Chips ---------- */
+
+.chip {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  font: 500 var(--text-sm) / 1 var(--font-body);
+  text-decoration: none;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
+}
+
+.chip:hover {
+  background: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Marquee (see scripts/features/marquee.js) ---------- */
+
+.marquee {
+  min-width: 0; /* never grow with its (repeated) content inside grid/flex parents */
+  overflow: clip;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-group {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+/* ---------- Accessibility helpers ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: calc(var(--z-header) + 1);
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--paper);
+  font: 600 var(--text-sm) / 1 var(--font-display);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ---------- WebGL ink background (scripts/fluid) ---------- */
+
+.fluid-canvas {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

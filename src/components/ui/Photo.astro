@@ -1,0 +1,23 @@
+---
+// A responsive, optimized photo. `src` is a file name from src/assets (e.g. "c1.jpg").
+// Astro generates WebP files in several widths at build time; `sizes` tells the
+// browser how wide the photo is displayed so it downloads the smallest one that fits.
+import { Image } from "astro:assets";
+import { image } from "../../lib/images.js";
+
+const { src, alt = "", sizes = "100vw", widths = [360, 640, 960, 1280, 1600], priority = false, ...attrs } = Astro.props;
+
+const source = typeof src === "string" ? image(src) : src;
+const usableWidths = [...new Set(widths.map((width) => Math.min(width, source.width)))];
+---
+
+<Image
+  src={source}
+  alt={alt}
+  widths={usableWidths}
+  sizes={sizes}
+  loading={priority ? "eager" : "lazy"}
+  fetchpriority={priority ? "high" : undefined}
+  decoding="async"
+  {...attrs}
+/>

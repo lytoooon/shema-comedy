@@ -1,0 +1,94 @@
+---
+// Two belts of brand cards moving in opposite directions. The cards shrink and turn as they
+// near the screen edges, like a curved conveyor (scripts/features/marquee.js, `depth`).
+import SectionHead from "../ui/SectionHead.astro";
+import Marquee from "../ui/Marquee.astro";
+import { Image } from "astro:assets";
+import { partners } from "../../data/content.js";
+import { image } from "../../lib/images.js";
+
+// Drawn logos for brands without an image file: `icon: "dice"` in content.js.
+// Shapes use the text colour; parts with class "cut" take the card colour.
+const shapes = {
+  dice: '<rect x="5" y="5" width="38" height="38" rx="10"/><circle class="cut" cx="15" cy="15" r="3.2"/><circle class="cut" cx="24" cy="24" r="3.2"/><circle class="cut" cx="33" cy="33" r="3.2"/>',
+};
+---
+
+<section class="section partners" id="partners" aria-labelledby="partners-title">
+  <SectionHead kicker={partners.kicker} title={partners.title} note={partners.note} id="partners-title" />
+
+  <ul class="sr-only">
+    {partners.brands.map((brand) => <li>{brand.name}</li>)}
+  </ul>
+
+  <div class="partner-belts" aria-hidden="true">
+    {
+      [1, -1].map((direction, row) => (
+        <Marquee class="partner-belt" speed={row ? 34 : 44} direction={direction} depth>
+          {partners.brands.map((brand) => (
+            <span class:list={["partner-card", { "partner-card--red": row }]}>
+              {brand.logo ? (
+                <Image class="partner-logo" src={image(brand.logo)} alt="" width={96} height={96} loading="lazy" />
+              ) : (
+                <svg class="partner-logo" viewBox="0 0 48 48" set:html={shapes[brand.icon]} />
+              )}
+              <span class="partner-name">{brand.name}</span>
+            </span>
+          ))}
+        </Marquee>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .partners {
+    overflow: clip;
+  }
+
+  .partner-belts {
+    display: grid;
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .partner-card {
+    --card-bg: var(--ink);
+    --scale: 1;
+    --turn: 0deg;
+    display: inline-flex;
+    min-width: clamp(13rem, 21vw, 19rem);
+    height: clamp(6.5rem, 11vw, 10rem);
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-right: clamp(0.75rem, 1.5vw, 1.5rem);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--card-bg);
+    color: var(--paper);
+    transform: perspective(900px) rotateY(var(--turn)) scale(var(--scale));
+  }
+
+  .partner-card--red {
+    --card-bg: var(--red);
+  }
+
+  .partner-card :global(.partner-logo) {
+    width: clamp(1.75rem, 3.5vw, 3rem);
+    height: clamp(1.75rem, 3.5vw, 3rem);
+    flex: none;
+    fill: currentColor;
+    object-fit: contain;
+  }
+
+  .partner-card :global(.cut) {
+    fill: var(--card-bg);
+  }
+
+  .partner-name {
+    font: 700 clamp(1.25rem, 0.9rem + 1.4vw, 2.25rem) / 1 var(--font-display);
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+</style>

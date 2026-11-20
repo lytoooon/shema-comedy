@@ -1,0 +1,36 @@
+/* Styles that support the scroll animations in src/scripts. */
+
+/*
+ * Elements that animate in on scroll start hidden, but only once JS has confirmed it is
+ * running (`.js` is set in <head>) and only until the animations are set up (`.motion-ready`).
+ * If the script ever fails, the fallback animation shows everything after 3 seconds.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js:not(.motion-ready) :is([data-reveal], [data-split]) {
+    opacity: 0;
+    animation: reveal-fallback 0.6s 3s forwards;
+  }
+}
+
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Masks created by SplitText. The padding keeps descenders (g, y, p) from being clipped. */
+.split-line-mask {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

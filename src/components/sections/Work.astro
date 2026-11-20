@@ -1,0 +1,277 @@
+---
+// A phone-style story feed. With JS the feed pins and each scroll swipes the next post up
+// (scripts/features/story-feed.js). Without JS, or with reduced motion, it's a simple grid.
+import SectionHead from "../ui/SectionHead.astro";
+import Photo from "../ui/Photo.astro";
+import { work, hero } from "../../data/content.js";
+import { pad } from "../../lib/text.js";
+---
+
+<section class="section section--bleed work" id="work" aria-labelledby="work-title">
+  <SectionHead kicker={work.kicker} title={work.title} note={work.note} id="work-title" />
+
+  <div class="feed" data-feed>
+    <div class="feed-backdrops" aria-hidden="true">
+      {work.items.map((item) => <Photo class="feed-backdrop" src={item.photo} widths={[96]} sizes="96px" data-feed-backdrop />)}
+    </div>
+
+    <p class="feed-counter" aria-hidden="true">
+      <span data-feed-current>01</span><span class="feed-total">/{pad(work.items.length)}</span>
+    </p>
+
+    <div class="feed-frame">
+      <ol class="feed-cards">
+        {
+          work.items.map((item, i) => (
+            <li class="feed-card" data-feed-card>
+              <figure>
+                <Photo src={item.photo} alt={item.alt} widths={[420, 640, 900, 1200]} sizes="(min-width: 760px) 40vw, 100vw" />
+                <figcaption>
+                  <span class="feed-card-index">{pad(i + 1)}</span>
+                  {item.caption}
+                </figcaption>
+              </figure>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="feed-ui" aria-hidden="true">
+        <div class="feed-bars">
+          {
+            work.items.map(() => (
+              <span>
+                <i data-feed-bar />
+              </span>
+            ))
+          }
+        </div>
+        <div class="feed-account">
+          <Photo src={hero.portrait.photo} widths={[80]} sizes="40px" class="feed-avatar" />
+          <span>{work.handle}</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="feed-hint" aria-hidden="true">Keep scrolling</p>
+  </div>
+</section>
+
+<style>
+  /* ---------- Default: a grid of posts (no JS / reduced motion) ---------- */
+  .feed {
+    position: relative;
+    padding-inline: var(--gutter);
+  }
+
+  .feed-backdrops,
+  .feed-counter,
+  .feed-ui,
+  .feed-hint {
+    display: none;
+  }
+
+  .feed-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
+  .feed-card figure {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--ink);
+  }
+
+  .feed-card :global(img) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .feed-card figcaption {
+    position: absolute;
+    inset: auto 0 0;
+    display: grid;
+    gap: 0.35rem;
+    padding: 4rem 1.5rem 1.5rem;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.75), transparent);
+    color: var(--paper);
+    font: 600 var(--text-lg) / 1.1 var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  .feed-card-index {
+    color: var(--red);
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+  }
+
+  /* ---------- Enhanced: pinned, full-screen story feed ---------- */
+  .feed:global(.is-enhanced) {
+    display: grid;
+    height: 100svh;
+    padding: 0;
+    place-items: center;
+    overflow: clip;
+    background: var(--ink);
+  }
+
+  .feed:global(.is-enhanced) > * {
+    grid-area: 1 / 1;
+  }
+
+  .feed:global(.is-enhanced) .feed-backdrops {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .feed-backdrops :global(.feed-backdrop) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(28px) brightness(0.5) saturate(1.3);
+    opacity: 0;
+    scale: 1.2;
+  }
+
+  .feed-backdrops :global(.feed-backdrop:first-child) {
+    opacity: 1;
+  }
+
+  .feed:global(.is-enhanced) .feed-frame {
+    position: relative;
+    height: min(84svh, 56rem);
+    aspect-ratio: 3 / 4;
+    overflow: clip;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2rem 5rem -1.5rem rgb(0 0 0 / 0.7);
+  }
+
+  .feed:global(.is-enhanced) .feed-cards {
+    display: block;
+    height: 100%;
+  }
+
+  .feed:global(.is-enhanced) .feed-card {
+    position: absolute;
+    inset: 0;
+  }
+
+  .feed:global(.is-enhanced) .feed-card figure {
+    border-radius: 0;
+  }
+
+  .feed:global(.is-enhanced) .feed-card :global(img) {
+    aspect-ratio: auto;
+  }
+
+  .feed:global(.is-enhanced) .feed-card figcaption {
+    padding: 6rem 1.75rem 2rem;
+    font-size: var(--text-xl);
+  }
+
+  /* Story bars + account, drawn over the cards */
+  .feed:global(.is-enhanced) .feed-ui {
+    position: absolute;
+    z-index: 2;
+    inset: 0 0 auto;
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem 1rem 3rem;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent);
+    color: var(--paper);
+  }
+
+  .feed-bars {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .feed-bars span {
+    height: 3px;
+    flex: 1;
+    overflow: hidden;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 0.35);
+  }
+
+  .feed-bars i {
+    display: block;
+    height: 100%;
+    background: var(--paper);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .feed-account {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font: 600 var(--text-sm) / 1 var(--font-body);
+  }
+
+  .feed-account :global(.feed-avatar) {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 0 2px var(--red);
+    object-fit: cover;
+    object-position: center 20%;
+  }
+
+  /* Big counter on the left, hint on the right (wide screens) */
+  .feed:global(.is-enhanced) .feed-counter {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-self: start;
+    margin-left: var(--gutter);
+    color: var(--paper);
+    font: 800 clamp(4rem, 9vw, 9rem) / 1 var(--font-display);
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .feed-total {
+    color: var(--on-stage-muted);
+    font-size: 0.3em;
+    letter-spacing: 0;
+  }
+
+  .feed:global(.is-enhanced) .feed-hint {
+    position: relative;
+    display: block;
+    justify-self: end;
+    margin-right: var(--gutter);
+    color: var(--on-stage-muted);
+    font: 500 var(--text-xs) / 1 var(--font-display);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  @media (width < 1000px) {
+    .feed:global(.is-enhanced) .feed-counter,
+    .feed:global(.is-enhanced) .feed-hint {
+      display: none;
+    }
+  }
+
+  @media (width < 760px) {
+    .feed:global(.is-enhanced) .feed-frame {
+      width: calc(100% - 1.5rem);
+      height: calc(100% - var(--header-h) - 0.75rem);
+      margin-top: calc(var(--header-h) - 0.75rem);
+      aspect-ratio: auto;
+      border-radius: var(--radius);
+    }
+  }
+</style>

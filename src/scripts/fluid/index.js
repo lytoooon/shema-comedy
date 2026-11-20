@@ -1,116 +1,100 @@
-import { REDUCED_MOTION } from "../motion.js";
-import { FLUID_SPEED, FLUID_OPACITY, FLUID_STREAK_STRETCH, FLUID_STREAK_BOOST } from "../config.js";
-import { vertexSource, fragmentSource as buildFragment } from "./shaders.js";
+// WebGL marbled-ink background behind the page. Tune it in scripts/config.js (FLUID).
+// Skipped for reduced motion, and quietly disabled if WebGL isn't available.
+import { gsap, REDUCED_MOTION } from "../core/motion.js";
+import { scrollMotion } from "../core/scroll-velocity.js";
+import { FLUID } from "../config.js";
+import { vertexSource, fragmentSource } from "./shaders.js";
+
+const MAX_PIXEL_RATIO = 0.8; // the pattern is soft, so render below screen resolution
 
 export function createFluidBackground() {
-  if (REDUCED_MOTION) return;
-  const canvas = document.getElementById("fluid-canvas");
+  const canvas = document.querySelector("[data-fluid]");
+  if (!canvas || REDUCED_MOTION) return;
+
   const gl = canvas.getContext("webgl", { alpha: true, antialias: false, powerPreference: "low-power" });
-  if (!gl) {
-    console.warn("WebGL is unavailable; the fluid background is disabled.");
-    return;
-  }
-
-  function compileShader(type, source) {
-    const shader = gl.createShader(type);
-    if (!shader) {
-      console.warn("The fluid shader could not be allocated.");
-      return null;
-    }
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      console.warn("The fluid shader could not compile.", gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  }
-
-  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
-  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, buildFragment(FLUID_SPEED, FLUID_OPACITY, FLUID_STREAK_STRETCH));
-  if (!vertexShader || !fragmentShader) return;
-
-  const program = gl.createProgram();
+  const program = gl && createProgram(gl);
   if (!program) {
-    console.warn("The fluid shader program could not be allocated.");
-    return;
-  }
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.warn("The fluid shader program could not link.", gl.getProgramInfoLog(program));
+    canvas.remove();
     return;
   }
 
-  const buffer = gl.createBuffer();
-  if (!buffer) {
-    console.warn("The fluid vertex buffer could not be allocated.");
-    return;
-  }
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.useProgram(program);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
     gl.STATIC_DRAW,
   );
-  gl.useProgram(program);
   const position = gl.getAttribLocation(program, "a_position");
   gl.enableVertexAttribArray(position);
   gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-  const resolution = gl.getUniformLocation(program, "u_resolution");
-  const time = gl.getUniformLocation(program, "u_time");
-  const scrollOffset = gl.getUniformLocation(program, "u_scroll");
-  const speedUniform = gl.getUniformLocation(program, "u_speed");
-  let pixelRatio = 1;
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-  function resizeFluidCanvas() {
-    pixelRatio = Math.min(window.devicePixelRatio * 0.5, 0.8);
+  const uniform = (name) => gl.getUniformLocation(program, name);
+  const u = {
+    resolution: uniform("u_resolution"),
+    time: uniform("u_time"),
+    scroll: uniform("u_scroll"),
+    streak: uniform("u_streak"),
+  };
+  gl.uniform1f(uniform("u_stretch"), FLUID.streakStretch);
+  gl.uniform1f(uniform("u_opacity"), FLUID.opacity);
+  gl.uniform3fv(uniform("u_ink"), hexToRgb(FLUID.ink));
+  gl.uniform3fv(uniform("u_wash"), hexToRgb(FLUID.wash));
+
+  let pixelRatio = 1;
+  function resize() {
+    pixelRatio = gsap.utils.clamp(0.6, MAX_PIXEL_RATIO, window.devicePixelRatio * 0.5);
     canvas.width = Math.max(1, Math.round(window.innerWidth * pixelRatio));
     canvas.height = Math.max(1, Math.round(window.innerHeight * pixelRatio));
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.uniform2f(resolution, canvas.width, canvas.height);
+    gl.uniform2f(u.resolution, canvas.width, canvas.height);
   }
 
-  let frameRequest = 0;
-  let startTime = 0;
-  let lastScrollY = window.scrollY;
-  let scrollSpeed = 0;
-  let boostedOffset = 0;
+  // Fast scrolling pushes the ink further than the scroll itself, for a streaky rush.
+  let streakOffset = 0;
+  function draw(time) {
+    streakOffset += Math.abs(scrollMotion.delta) * scrollMotion.speed * FLUID.streakBoost;
+    gl.uniform1f(u.time, time * FLUID.speed);
+    gl.uniform1f(u.scroll, (window.scrollY + streakOffset) * pixelRatio);
+    gl.uniform1f(u.streak, scrollMotion.speed);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
 
-  function drawFluid(timestamp) {
-  if (document.hidden) return;
-  if (!startTime) startTime = timestamp;
+  resize();
+  window.addEventListener("resize", resize, { passive: true });
+  gsap.ticker.add(draw); // shares the page's frame loop; browsers pause it in background tabs
 
-  const y = window.scrollY;
-  const delta = Math.min(Math.abs(y - lastScrollY), 200);
-  lastScrollY = y;
-
-  const target = Math.min(delta / 60, 1);
-  scrollSpeed += (target - scrollSpeed) * 0.08;
-  boostedOffset += delta * scrollSpeed * FLUID_STREAK_BOOST;
-
-  gl.uniform1f(time, (timestamp - startTime) / 1000);
-  gl.uniform1f(scrollOffset, (y + boostedOffset) * pixelRatio);
-  gl.uniform1f(speedUniform, scrollSpeed);
-  gl.drawArrays(gl.TRIANGLES, 0, 6);
-  frameRequest = window.requestAnimationFrame(drawFluid);
+  canvas.addEventListener("webglcontextlost", (event) => {
+    event.preventDefault();
+    gsap.ticker.remove(draw);
+  });
 }
 
-  function syncFluidVisibility() {
-    if (document.hidden) {
-      window.cancelAnimationFrame(frameRequest);
-      frameRequest = 0;
-    } else if (!frameRequest) {
-      frameRequest = window.requestAnimationFrame(drawFluid);
-    }
-  }
+function createProgram(gl) {
+  const compile = (type, source) => {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
+    console.warn("Fluid background: shader failed to compile.", gl.getShaderInfoLog(shader));
+    return null;
+  };
 
-  resizeFluidCanvas();
-  window.addEventListener("resize", resizeFluidCanvas, { passive: true });
-  document.addEventListener("visibilitychange", syncFluidVisibility);
-  syncFluidVisibility();
+  const vertex = compile(gl.VERTEX_SHADER, vertexSource);
+  const fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertex || !fragment) return null;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertex);
+  gl.attachShader(program, fragment);
+  gl.linkProgram(program);
+  if (gl.getProgramParameter(program, gl.LINK_STATUS)) return program;
+  console.warn("Fluid background: shader program failed to link.", gl.getProgramInfoLog(program));
+  return null;
+}
+
+/** "#2c2621" → [0.17, 0.15, 0.13] */
+function hexToRgb(hex) {
+  const value = parseInt(hex.replace("#", ""), 16);
+  return [(value >> 16) & 255, (value >> 8) & 255, value & 255].map((channel) => channel / 255);
 }

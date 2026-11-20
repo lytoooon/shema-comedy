@@ -1,25 +1,360 @@
 ---
-import { site } from "../data/site.js";
+import Icon from "./ui/Icon.astro";
+import { site, whatsappLink } from "../data/site.js";
+import { contact } from "../data/content.js";
+import { pad } from "../lib/text.js";
 ---
 
-<a class="skip-link" href="#story">Skip to the story</a>
-<header class="site-header">
-  <a class="wordmark" href="#top" aria-label={`${site.name} home`}>
-    <span class="wordmark-mark" aria-hidden="true">S/</span>
-    {site.name}
-  </a>
-  <button
-    class="menu-toggle"
-    type="button"
-    aria-expanded="false"
-    aria-controls="site-menu"
-    aria-label="Open navigation menu"
-  >
-    <span class="menu-icon" aria-hidden="true"></span>
-    <span>Menu</span>
-  </button>
-  <nav class="site-nav" id="site-menu" aria-label="Main navigation">
-    {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
-    <a class="book-link" href="#contact">Let’s talk</a>
-  </nav>
+<a class="skip-link" href="#main">Skip to content</a>
+<span class="scroll-progress" data-scroll-progress aria-hidden="true"></span>
+
+<header class="site-header" data-header>
+  <div class="header-bar">
+    <a class="wordmark" href="#top" aria-label={`${site.brand}, back to top`}>
+      <span class="wordmark-mark" aria-hidden="true">S/</span>
+      <span class="wordmark-name">{site.name}</span>
+    </a>
+
+    <nav class="header-nav" aria-label="Main">
+      <ul>
+        {
+          site.nav.map((item) => (
+            <li>
+              <a class="roll-link" href={item.href} data-text={item.label}>
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary btn--sm header-cta" href="#contact">Let’s talk</a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+      <span class="sr-only" data-menu-label>Open menu</span>
+      <span class="menu-icon" aria-hidden="true"></span>
+    </button>
+  </div>
 </header>
+
+<div class="menu" id="menu" data-menu>
+  <nav aria-label="Menu">
+    <ol class="menu-links">
+      {
+        site.nav.map((item, i) => (
+          <li style={`--i:${i}`}>
+            <a href={item.href}>
+              <span class="menu-index">{pad(i + 1)}</span>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+  <div class="menu-footer" style={`--i:${site.nav.length}`}>
+    <a class="btn btn--primary" href={whatsappLink(contact.primary.message)} target="_blank" rel="noopener">
+      <Icon name="chat" class="btn-icon" />
+      {contact.primary.label}
+    </a>
+    <ul class="menu-socials">
+      {
+        site.socials.map((social) => (
+          <li>
+            <a href={social.url} target="_blank" rel="noopener">
+              {social.label} ↗<span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  /* ---------- Scroll progress line ---------- */
+  .scroll-progress {
+    position: fixed;
+    z-index: calc(var(--z-header) + 1);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+  }
+
+  /* ---------- Bar ---------- */
+  .site-header {
+    position: fixed;
+    z-index: var(--z-header);
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, calc(var(--gutter) - 1.25rem)) 0;
+    pointer-events: none;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .site-header:global(.is-hidden) {
+    transform: translateY(-120%);
+  }
+
+  .header-bar {
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: 0 0.4rem 0 1.25rem;
+    border-radius: 999px;
+    pointer-events: auto;
+    transition:
+      background-color 0.4s var(--ease-out),
+      box-shadow 0.4s var(--ease-out);
+  }
+
+  .site-header:global(.is-scrolled) .header-bar {
+    background: rgb(246 242 236 / 0.8);
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 0.75rem 2rem -1rem rgb(21 18 15 / 0.35);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-right: auto;
+    font: 700 1.125rem / 1 var(--font-display);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.4s;
+  }
+
+  .wordmark-mark {
+    color: var(--red);
+    font: 800 1.75rem / 0.8 var(--font-display);
+    letter-spacing: -0.12em;
+    transform: rotate(-9deg);
+    transition: transform 0.6s var(--ease-spring);
+  }
+
+  .wordmark:hover .wordmark-mark {
+    transform: rotate(-9deg) scale(1.15);
+  }
+
+  /* ---------- Desktop links (text rolls up on hover) ---------- */
+  .header-nav ul {
+    display: flex;
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  }
+
+  .roll-link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    font: 500 0.875rem / 1.4 var(--font-display);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .roll-link span,
+  .roll-link::after {
+    display: block;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .roll-link::after {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    color: var(--red-text);
+    content: attr(data-text);
+    content: attr(data-text) / "";
+  }
+
+  .roll-link:hover span,
+  .roll-link:hover::after {
+    transform: translateY(-100%);
+  }
+
+  /* ---------- Menu button ---------- */
+  .menu-toggle {
+    display: none;
+    width: 2.875rem;
+    height: 2.875rem;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+  }
+
+  .menu-icon,
+  .menu-icon::before {
+    display: block;
+    width: 1.125rem;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .menu-icon {
+    position: relative;
+    transform: translateY(-3px);
+  }
+
+  .menu-icon::before {
+    position: absolute;
+    top: 6px;
+    width: 0.75rem;
+    content: "";
+  }
+
+  .menu-toggle[aria-expanded="true"] {
+    background: var(--red);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon {
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon::before {
+    top: 0;
+    width: 1.125rem;
+    transform: rotate(-90deg);
+  }
+
+  /* ---------- Full-screen menu (small screens) ---------- */
+  .menu {
+    position: fixed;
+    z-index: var(--z-menu);
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: calc(var(--header-h) + 3rem) var(--gutter) max(2rem, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    background: var(--ink);
+    color: var(--paper);
+    clip-path: circle(0% at calc(100% - 2.5rem) 2.25rem);
+    visibility: hidden;
+    transition:
+      clip-path 0.7s var(--ease-in-out),
+      visibility 0s 0.7s;
+  }
+
+  .menu:global(.is-open) {
+    clip-path: circle(150% at calc(100% - 2.5rem) 2.25rem);
+    visibility: visible;
+    transition: clip-path 0.8s var(--ease-in-out);
+  }
+
+  .menu-links a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    font: 700 clamp(2.75rem, 13vw, 5rem) / 1 var(--font-display);
+    letter-spacing: -0.04em;
+    text-decoration: none;
+  }
+
+  .menu-links a:hover,
+  .menu-links a:focus-visible {
+    color: var(--red);
+  }
+
+  .menu-index {
+    color: var(--red);
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+  }
+
+  .menu-links li,
+  .menu-footer {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.3s,
+      transform 0.3s;
+  }
+
+  .menu:global(.is-open) :is(.menu-links li, .menu-footer) {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s calc(0.3s + var(--i) * 0.07s),
+      transform 0.8s var(--ease-out) calc(0.3s + var(--i) * 0.07s);
+  }
+
+  .menu-footer {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+
+  .menu-socials {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--on-stage-muted);
+    font-size: var(--text-sm);
+  }
+
+  .menu-socials a {
+    text-decoration: none;
+  }
+
+  /* When the menu is open, the bar sits on the dark overlay. */
+  :global(.menu-open) .site-header {
+    transform: none;
+  }
+
+  :global(.menu-open) .header-bar {
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  :global(.menu-open) .wordmark {
+    color: var(--paper);
+  }
+
+  :global(.menu-open) .header-cta {
+    visibility: hidden;
+  }
+
+  @media (width < 900px) {
+    .header-nav {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: grid;
+    }
+  }
+
+  @media (width < 480px) {
+    .header-cta {
+      display: none;
+    }
+  }
+
+  @media (width >= 900px) {
+    .menu {
+      display: none;
+    }
+  }
+</style>

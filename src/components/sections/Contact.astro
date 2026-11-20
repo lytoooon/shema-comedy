@@ -1,0 +1,189 @@
+---
+import Icon from "../ui/Icon.astro";
+import { contact } from "../../data/content.js";
+import { site, whatsappLink, phoneLink } from "../../data/site.js";
+import { emphasize } from "../../lib/text.js";
+---
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <p class="kicker" data-reveal>{contact.kicker}</p>
+  <h2 class="contact-title" id="contact-title" data-split set:html={emphasize(contact.title)} />
+
+  <div class="contact-grid">
+    <div class="contact-main">
+      <p class="contact-invite" data-reveal>{contact.invite}</p>
+      <div class="contact-actions" data-reveal>
+        <a class="btn btn--primary btn--lg" href={whatsappLink(contact.primary.message)} target="_blank" rel="noopener" data-magnetic>
+          <Icon name="chat" class="btn-icon" />
+          {contact.primary.label}
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+        <a class="contact-line" href={phoneLink}>
+          <Icon name="phone" />
+          {site.phone}
+        </a>
+        {
+          site.email && (
+            <a class="contact-line" href={`mailto:${site.email}`}>
+              <Icon name="mail" />
+              {site.email}
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="contact-lists">
+      <div data-reveal>
+        <h3 class="contact-label">Bookings</h3>
+        <ul class="contact-chips">
+          {
+            contact.bookings.map((booking) => (
+              <li>
+                <a class="chip" href={whatsappLink(`Hi Shema! I’d like to talk about ${booking.toLowerCase()}.`)} target="_blank" rel="noopener">
+                  {booking}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div data-reveal>
+        <h3 class="contact-label">Follow</h3>
+        <ul class="contact-socials">
+          {
+            site.socials.map((social) => (
+              <li>
+                <a href={social.url} target="_blank" rel="noopener">
+                  <span class="social-name">{social.label}</span>
+                  <span class="social-handle">{social.handle}</span>
+                  <Icon name="arrow" class="social-arrow" />
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-bottom: clamp(5rem, 12vh, 9rem);
+  }
+
+  .contact-title {
+    max-width: 11ch;
+    font-size: clamp(3.5rem, 1rem + 11vw, 13rem);
+    line-height: 0.88;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    margin-top: clamp(3.5rem, 9vh, 7rem);
+  }
+
+  .contact-invite {
+    max-width: 24ch;
+    font: 500 var(--text-xl) / 1.15 var(--font-display);
+    letter-spacing: -0.035em;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .contact-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font: 600 var(--text-lg) / 1.2 var(--font-display);
+    letter-spacing: -0.02em;
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+    transition: color 0.3s;
+  }
+
+  .contact-line:hover {
+    color: var(--red-text);
+  }
+
+  .contact-line :global(svg) {
+    width: 1.2em;
+    color: var(--red);
+  }
+
+  .contact-lists {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .contact-label {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font: 500 var(--text-xs) / 1.2 var(--font-display);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .contact-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .contact-socials {
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-socials a {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .contact-socials a:hover {
+    color: var(--red-text);
+  }
+
+  .social-name {
+    font: 700 var(--text-lg) / 1 var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  .social-handle {
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  .contact-socials :global(.social-arrow) {
+    width: 1.25rem;
+    transition: transform 0.5s var(--ease-spring);
+  }
+
+  .contact-socials a:hover :global(.social-arrow) {
+    transform: translate(3px, -3px);
+  }
+
+  @media (width < 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

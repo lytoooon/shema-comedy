@@ -1,0 +1,83 @@
+---
+// Two crossing bands under the hero. Decorative (the same words are listed in Services),
+// so it is hidden from screen readers. They speed up with scroll and reverse when you scroll up.
+import Marquee from "../ui/Marquee.astro";
+import { ticker } from "../../data/content.js";
+---
+
+<div class="ticker" aria-hidden="true">
+  <Marquee class="ticker-band ticker-band--ink" speed={45} direction={-1} flip>
+    {
+      ticker.map((word) => (
+        <span class="ticker-item">
+          {word}
+          <svg class="ticker-star" viewBox="0 0 24 24">
+            <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7" />
+          </svg>
+        </span>
+      ))
+    }
+  </Marquee>
+  <Marquee class="ticker-band ticker-band--red" speed={70} flip>
+    {
+      ticker.map((word) => (
+        <span class="ticker-item">
+          {word}
+          <svg class="ticker-star" viewBox="0 0 24 24">
+            <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7" />
+          </svg>
+        </span>
+      ))
+    }
+  </Marquee>
+</div>
+
+<style>
+  .ticker {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    height: clamp(8rem, 15vw, 12rem);
+    place-items: center;
+    margin-top: clamp(-6rem, -7vw, -4rem);
+    overflow: clip;
+    pointer-events: none;
+  }
+
+  .ticker :global(.ticker-band) {
+    grid-area: 1 / 1;
+    width: 112%;
+    padding-block: clamp(0.6rem, 1.2vw, 1rem);
+    color: var(--paper);
+    font: 700 clamp(1.5rem, 1rem + 2.4vw, 3.25rem) / 1 var(--font-display);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .ticker :global(.ticker-band--ink) {
+    background: var(--ink);
+    rotate: 2.5deg;
+  }
+
+  .ticker :global(.ticker-band--red) {
+    background: var(--red);
+    box-shadow: 0 1rem 2.5rem -1rem rgb(143 4 0 / 0.6);
+    rotate: -3deg;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding-right: 0.6em;
+  }
+
+  .ticker-star {
+    width: 0.6em;
+    height: 0.6em;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 3;
+  }
+</style>

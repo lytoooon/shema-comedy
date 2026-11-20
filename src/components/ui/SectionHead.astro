@@ -1,0 +1,12 @@
+---
+// Kicker ("01 / Reach") + big title + optional side note. The title id labels the section.
+import { emphasize } from "../../lib/text.js";
+
+const { kicker, title, note, id } = Astro.props;
+---
+
+<header class="section-head">
+  <p class="kicker" data-reveal>{kicker}</p>
+  <h2 class="title" id={id} data-split set:html={emphasize(title)} />
+  {note && <p class="note" data-reveal>{note}</p>}
+</header>

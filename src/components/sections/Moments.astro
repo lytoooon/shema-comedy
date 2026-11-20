@@ -1,0 +1,164 @@
+---
+// A horizontal strip of photos. With JS it pins and slides sideways as you scroll, the
+// cards lean with your scroll speed (scripts/features/photo-strip.js). Without JS it's a
+// swipeable row.
+import SectionHead from "../ui/SectionHead.astro";
+import Photo from "../ui/Photo.astro";
+import { moments } from "../../data/content.js";
+import { pad } from "../../lib/text.js";
+---
+
+<section class="section section--bleed moments" id="moments" aria-labelledby="moments-title">
+  <SectionHead kicker={moments.kicker} title={moments.title} note={moments.note} id="moments-title" />
+
+  <div class="strip" data-strip>
+    <p class="strip-backdrop" aria-hidden="true" data-strip-backdrop>{moments.backdrop}</p>
+    <ul class="strip-track" data-strip-track>
+      {
+        moments.items.map((item, i) => (
+          <li class="strip-item">
+            <figure>
+              <div class="strip-photo">
+                <Photo src={item.photo} alt={item.alt} widths={[360, 560, 800, 1100]} sizes="(min-width: 760px) 30vw, 75vw" />
+              </div>
+              <figcaption>
+                <span>{pad(i + 1)}</span>
+                {item.caption}
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="strip-progress" aria-hidden="true"><span data-strip-progress></span></div>
+  </div>
+</section>
+
+<style>
+  .moments {
+    overflow: clip;
+  }
+
+  /* ---------- Default: a native, swipeable row ---------- */
+  .strip {
+    position: relative;
+  }
+
+  .strip-track {
+    display: flex;
+    gap: clamp(1.25rem, 4vw, 4rem);
+    padding: 1rem var(--gutter) 2rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .strip-item {
+    width: clamp(15rem, 30vw, 28rem);
+    flex: none;
+    scroll-snap-align: center;
+  }
+
+  .strip-item figure {
+    transform: skewX(var(--skew, 0deg));
+  }
+
+  .strip-photo {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--paper-deep);
+  }
+
+  .strip-photo :global(img) {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    transition: scale 0.9s var(--ease-out);
+  }
+
+  .strip-item:hover .strip-photo :global(img) {
+    scale: 1.06;
+  }
+
+  .strip-item figcaption {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    font: 600 var(--text-lg) / 1.2 var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  .strip-item figcaption span {
+    color: var(--red-text);
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    line-height: 2.2;
+  }
+
+  .strip-backdrop,
+  .strip-progress {
+    display: none;
+  }
+
+  /* ---------- Enhanced: pinned, moves sideways ---------- */
+  .strip:global(.is-enhanced) {
+    display: flex;
+    height: 100svh;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .strip:global(.is-enhanced) .strip-track {
+    width: max-content;
+    align-items: center;
+    padding-right: max(var(--gutter), 12vw);
+    overflow: visible;
+    will-change: transform;
+  }
+
+  /* Alternate cards sit higher and lower */
+  .strip:global(.is-enhanced) .strip-item:nth-child(even) {
+    translate: 0 6svh;
+  }
+
+  .strip:global(.is-enhanced) .strip-item:nth-child(odd) {
+    translate: 0 -3svh;
+  }
+
+  .strip:global(.is-enhanced) .strip-item {
+    width: clamp(14rem, min(28vw, 38svh), 26rem);
+  }
+
+  .strip:global(.is-enhanced) .strip-backdrop {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    color: var(--ink);
+    font: 800 clamp(8rem, 24vw, 24rem) / 1 var(--font-display);
+    letter-spacing: -0.06em;
+    opacity: 0.06;
+    text-transform: uppercase;
+    white-space: nowrap;
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  .strip:global(.is-enhanced) .strip-progress {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 2.5rem;
+    left: var(--gutter);
+    display: block;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .strip-progress span {
+    display: block;
+    height: 100%;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+</style>
