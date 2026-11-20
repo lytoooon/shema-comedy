@@ -1,0 +1,61 @@
+---
+// The dark "on stage" moment. A spotlight follows the pointer and each word lights up as you
+// scroll (scripts/features/stage.js). Without JS every word is simply lit.
+import { results } from "../../data/content.js";
+---
+
+<section class="section section--stage results" id="results" aria-labelledby="results-title" data-stage>
+  <div class="stage-light" aria-hidden="true" data-stage-light></div>
+
+  <div class="results-inner">
+    <p class="kicker" data-reveal>{results.kicker}</p>
+    <h2 class="results-lines" id="results-title">
+      {results.lines.map((line) => <span class="results-line" data-stage-line>{line}{" "}</span>)}
+    </h2>
+    <p class="note results-note" data-reveal>{results.note}</p>
+  </div>
+</section>
+
+<style>
+  .results {
+    display: grid;
+    min-height: 100svh;
+    align-items: center;
+    overflow: clip;
+  }
+
+  /* A warm spotlight (position set by JS through --x / --y) and a faint beam from above. */
+  .stage-light {
+    --x: 50%;
+    --y: 45%;
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at var(--x) var(--y), rgb(255 236 214 / 0.2), rgb(255 236 214 / 0.06) 22%, transparent 45%),
+      radial-gradient(ellipse 40% 90% at 50% -10%, rgb(255 236 214 / 0.1), transparent 70%);
+    pointer-events: none;
+  }
+
+  .results-inner {
+    position: relative;
+  }
+
+  .results-lines {
+    font-size: clamp(3.25rem, 1rem + 9.5vw, 10.5rem);
+    line-height: 0.92;
+  }
+
+  .results-line {
+    display: block;
+  }
+
+  .results-line:last-child {
+    color: var(--red);
+  }
+
+  .results-note {
+    max-width: 26ch;
+    margin: clamp(3rem, 8vh, 6rem) 0 0 auto;
+    font-size: var(--text-lg);
+  }
+</style>

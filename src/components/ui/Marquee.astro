@@ -1,0 +1,24 @@
+---
+// An endless band of content. scripts/features/marquee.js moves it and speeds it up with scroll.
+//   speed      pixels per second
+//   direction  1 = moves left, -1 = moves right
+//   flip       reverse direction when the visitor scrolls back up
+//   depth      items shrink and turn away towards the screen edges (a curved belt)
+const { speed = 60, direction = 1, flip = false, depth = false, class: className, ...attrs } = Astro.props;
+const content = await Astro.slots.render("default");
+---
+
+<div
+  class:list={["marquee", className]}
+  data-marquee
+  data-speed={speed}
+  data-direction={direction}
+  data-flip={flip ? "" : undefined}
+  data-depth={depth ? "" : undefined}
+  {...attrs}
+>
+  <div class="marquee-track">
+    <div class="marquee-group" set:html={content} />
+    <div class="marquee-group" aria-hidden="true" set:html={content} />
+  </div>
+</div>

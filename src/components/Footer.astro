@@ -1,4 +1,114 @@
+---
+import Icon from "./ui/Icon.astro";
+import { site } from "../data/site.js";
+import { footer } from "../data/content.js";
+
+const year = new Date().getFullYear();
+---
+
 <footer class="site-footer">
-  <span>I’m Shema · Lusaka, Zambia</span>
-  <span>Multi-talented Youth.</span>
+  <div class="footer-top">
+    <p class="footer-tagline">{footer.tagline}</p>
+    <p class="footer-clock">
+      {site.location}
+      <time data-clock data-time-zone={site.timeZone} hidden></time>
+    </p>
+    <a class="footer-top-link" href="#top">
+      Back to top
+      <Icon name="arrow-up" />
+    </a>
+  </div>
+
+  <p class="footer-wordmark" aria-hidden="true" data-footer-wordmark>
+    {[...site.name].map((char) => <span>{char}</span>)}
+  </p>
+
+  <div class="footer-bottom">
+    <span>© {year} {site.brand}</span>
+    <span>Lifestyle &amp; comedy creator</span>
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    padding: clamp(3rem, 8vh, 5rem) var(--gutter) max(1.5rem, env(safe-area-inset-bottom));
+    overflow: clip;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .footer-top,
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+
+  .footer-tagline {
+    font: 600 var(--text-lg) / 1.2 var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-clock {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--on-stage-muted);
+    font-size: var(--text-sm);
+  }
+
+  .footer-clock time {
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer-top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: 500 var(--text-xs) / 1 var(--font-display);
+    letter-spacing: 0.16em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .footer-top-link :global(svg) {
+    width: 1.1rem;
+    transition: transform 0.5s var(--ease-spring);
+  }
+
+  .footer-top-link:hover {
+    color: var(--red);
+  }
+
+  .footer-top-link:hover :global(svg) {
+    transform: translateY(-4px);
+  }
+
+  /* Giant name spanning the full width. The size here fits "SHEMA"; scripts/features/footer.js
+     re-fits it exactly for any name, and makes the letters rise in as the footer scrolls in. */
+  .footer-wordmark {
+    display: flex;
+    justify-content: space-between;
+    margin-top: clamp(2rem, 6vh, 4rem);
+    color: var(--red);
+    font: 800 calc((100vw - 2 * var(--gutter)) / 4.2) / 0.78 var(--font-display);
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-wordmark span {
+    display: inline-block;
+  }
+
+  .footer-bottom {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(246 242 236 / 0.15);
+    color: var(--on-stage-muted);
+    font-size: var(--text-sm);
+  }
+</style>

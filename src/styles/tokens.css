@@ -1,26 +1,52 @@
+/* Design tokens: change the look of the whole site from here. */
+
 :root {
   color-scheme: light;
-  --white: #ffffff;
-  --paper: #f5f5f5;
-  --gray: #d0d0d0;
-  --muted: #5c5c5c;
-  --ink: #161616;
-  --red: #e10600;
-  --brown: #73513d;
-  --font-display: "MuseoModerno", "Arial Black", sans-serif;
-  --font-body: "Inter", Arial, sans-serif;
-  --page-gutter: clamp(22px, 6.4vw, 104px);
-  --space-section: clamp(120px, 20vh, 260px);
-  background: var(--white);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-}
 
-@media (max-width: 760px) {
-  :root {
-    --page-gutter: 24px;
-    --space-section: clamp(115px, 18vh, 180px);
-  }
+  /* Colour */
+  --paper: #f6f2ec;
+  --paper-deep: #ebe4da;
+  --ink: #15120f;
+  --ink-soft: #2b2723;
+  --muted: #6b635b;
+  --line: rgb(21 18 15 / 0.14);
+  --red: #e10600;
+  --red-text: #c80500; /* red for small text on paper (keeps AA contrast) */
+  --red-deep: #8f0400;
+  --stage: #0d0b0a; /* dark "on stage" sections */
+  --on-stage: #f6f2ec;
+  --on-stage-muted: rgb(246 242 236 / 0.64);
+
+  /* Type */
+  --font-display: "MuseoModerno", "Arial Black", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.9375rem;
+  --text-base: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --text-lg: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+  --text-xl: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);
+  --text-2xl: clamp(2.5rem, 1.4rem + 4.6vw, 5.75rem);
+  --text-3xl: clamp(3rem, 1.2rem + 7.4vw, 8.5rem);
+  --text-display: clamp(5.5rem, 1rem + 19vw, 21rem);
+
+  /* Space */
+  --gutter: clamp(1.25rem, 5vw, 6.5rem);
+  --section-space: clamp(6rem, 15vh, 11rem);
+  --header-h: 4.75rem;
+
+  /* Shape & depth */
+  --radius-sm: 0.625rem;
+  --radius: 1.25rem;
+  --radius-lg: 2rem;
+  --shadow: 0 1.5rem 3rem -1.25rem rgb(21 18 15 / 0.4);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layers */
+  --z-menu: 40;
+  --z-header: 50;
+  --z-grain: 60;
 }

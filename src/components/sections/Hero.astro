@@ -1,0 +1,329 @@
+---
+// Layers, back to front: "SHEMA" (on a smile curve) → portrait → outlined "COMEDY" → intro + badge.
+// The entrance animation is pure CSS so it starts the moment the page paints;
+// scripts/features/hero.js adds the scroll parallax.
+import Photo from "../ui/Photo.astro";
+import Icon from "../ui/Icon.astro";
+import { hero } from "../../data/content.js";
+
+// Each letter gets its distance from the middle of the word (`--d`), which CSS uses to bend the word.
+const letters = [...hero.titleTop].map((char, i, all) => ({ char, i, d: i - (all.length - 1) / 2 }));
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title" data-hero>
+  <div class="hero-eyebrow">
+    {hero.eyebrow.map((text) => <span>{text}</span>)}
+  </div>
+
+  <h1 class="hero-title" id="hero-title">
+    <span class="sr-only">{hero.titleTop} {hero.titleBottom}</span>
+    <span class="hero-word hero-word--top" aria-hidden="true">
+      {
+        letters.map(({ char, i, d }) => (
+          <span class="hero-char" style={`--i:${i};--d:${d}`} data-hero-char>
+            <span class="hero-char-inner">{char}</span>
+          </span>
+        ))
+      }
+    </span>
+    <span class="hero-word hero-word--bottom" aria-hidden="true" data-hero-fill>
+      <span class="hero-word-inner">{hero.titleBottom}</span>
+    </span>
+  </h1>
+
+  <figure class="hero-portrait" data-hero-portrait>
+    <Photo
+      src={hero.portrait.photo}
+      alt={hero.portrait.alt}
+      priority
+      widths={[420, 640, 900, 1088]}
+      sizes="(min-width: 760px) 40vw, 100vw"
+    />
+  </figure>
+
+  <div class="hero-intro" data-hero-fade>
+    <p>{hero.intro}</p>
+    <a class="btn btn--primary" href={hero.cta.href} data-magnetic>
+      {hero.cta.label}
+      <Icon name="arrow" class="btn-icon" />
+    </a>
+  </div>
+
+  <div class="hero-badge" aria-hidden="true" data-hero-fade>
+    <svg class="hero-badge-ring" viewBox="0 0 200 200">
+      <defs>
+        <path id="hero-badge-path" d="M100 100m-76 0a76 76 0 1 1 152 0a76 76 0 1 1-152 0" />
+      </defs>
+      <text><textPath href="#hero-badge-path" textLength="477">{hero.badge.toUpperCase()}</textPath></text>
+    </svg>
+    <svg class="hero-badge-face" viewBox="0 0 48 48">
+      <circle cx="17" cy="19" r="3.5"></circle>
+      <circle cx="31" cy="19" r="3.5"></circle>
+      <path d="M13 28c2.5 6 7 8.5 11 8.5s8.5-2.5 11-8.5"></path>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .hero {
+    --portrait-h: 78%;
+    position: relative;
+    height: 100svh;
+    min-height: 42rem;
+    overflow: clip;
+  }
+
+  .hero-eyebrow {
+    position: absolute;
+    z-index: 4;
+    top: calc(var(--header-h) + 1.25rem);
+    right: var(--gutter);
+    left: var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--muted);
+    font: 500 var(--text-xs) / 1.2 var(--font-display);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Title ---------- */
+  .hero-word {
+    position: absolute;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    font: 800 var(--text-display) / 0.8 var(--font-display);
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* "SHEMA": sits behind the portrait and bends into a smile. --curve 0 = straight. */
+  .hero-word--top {
+    --curve: 0.035;
+    z-index: 1;
+    top: calc(var(--header-h) + 2.5rem + 4%);
+    color: var(--red);
+  }
+
+  .hero-char {
+    display: inline-block;
+    translate: 0 calc(var(--d) * var(--d) * var(--curve) * -1em);
+    rotate: calc(var(--d) * var(--curve) * -160deg);
+  }
+
+  .hero-char-inner {
+    display: inline-block;
+  }
+
+  /* "COMEDY": outlined, in front of the portrait. JS fills it with red (--fill) on scroll. */
+  .hero-word--bottom {
+    --fill: 0%;
+    z-index: 3;
+    bottom: 7%;
+    font-size: calc(var(--text-display) * 0.7);
+  }
+
+  .hero-word-inner {
+    display: inline-block;
+    padding: 0 0.04em;
+    background: linear-gradient(90deg, var(--red) var(--fill), transparent var(--fill));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: clamp(1.5px, 0.2vw, 3px) var(--red);
+  }
+
+  /* ---------- Portrait ---------- */
+  .hero-portrait {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 50%;
+    height: var(--portrait-h);
+    aspect-ratio: 1088 / 1445;
+    translate: -50% 0;
+  }
+
+  .hero-portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  /* ---------- Intro + call to action ---------- */
+  .hero-intro {
+    position: absolute;
+    z-index: 4;
+    top: 46%;
+    left: var(--gutter);
+    display: grid;
+    max-width: min(20rem, 26vw);
+    gap: 1.5rem;
+    justify-items: start;
+  }
+
+  .hero-intro p {
+    font-size: var(--text-lg);
+    line-height: 1.35;
+  }
+
+  /* ---------- Spinning sticker ---------- */
+  .hero-badge {
+    position: absolute;
+    z-index: 4;
+    top: 44%;
+    right: var(--gutter);
+    display: grid;
+    width: clamp(6.5rem, 10vw, 9.5rem);
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: var(--shadow);
+    color: var(--paper);
+    rotate: -12deg;
+  }
+
+  .hero-badge > svg {
+    grid-area: 1 / 1;
+  }
+
+  .hero-badge-ring {
+    width: 100%;
+    animation: spin 16s linear infinite;
+    fill: currentColor;
+    font: 700 1.05rem / 1 var(--font-display);
+    letter-spacing: 0.08em;
+  }
+
+  .hero-badge-face {
+    width: 34%;
+    fill: currentColor;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 3.5;
+  }
+
+  .hero-badge-face path {
+    fill: none;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* ---------- Entrance (CSS only, so it never waits for JS) ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-char-inner {
+      animation: hero-char-in 1.2s var(--ease-spring) backwards;
+      animation-delay: calc(0.15s + var(--i) * 0.07s);
+    }
+
+    .hero-portrait :global(img) {
+      animation: hero-rise 1.4s var(--ease-out) 0.25s backwards;
+    }
+
+    .hero-word-inner {
+      animation: hero-rise 1.3s var(--ease-out) 0.55s backwards;
+    }
+
+    .hero-eyebrow,
+    .hero-intro > *,
+    .hero-badge > * {
+      animation: hero-fade 1s var(--ease-out) 0.8s backwards;
+    }
+
+    .hero-intro > :last-child {
+      animation-delay: 0.9s;
+    }
+  }
+
+  @keyframes hero-char-in {
+    from {
+      opacity: 0;
+      transform: translateY(65%) rotate(calc(var(--d) * 14deg)) scale(0.6);
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12%);
+    }
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+  }
+
+  /* ---------- Phones and portrait tablets: words stacked on top, intro on the shirt ---------- */
+  @media (width < 760px), (orientation: portrait) and (width < 1100px) {
+    .hero {
+      --portrait-h: 62%;
+      min-height: 36rem;
+    }
+
+    .hero-eyebrow {
+      display: none;
+    }
+
+    .hero-word--top {
+      --curve: 0.045;
+      top: calc(var(--header-h) + 9%);
+      font-size: clamp(4.5rem, 27vw, 9rem);
+    }
+
+    .hero-word--bottom {
+      top: calc(var(--header-h) + 9% + clamp(4.5rem, 27vw, 9rem) * 0.86);
+      bottom: auto;
+      font-size: clamp(3.4rem, 19.5vw, 6.5rem);
+    }
+
+    /* Fade the bottom into the black shirt so white text reads clearly. */
+    .hero::after {
+      position: absolute;
+      z-index: 3;
+      inset: auto 0 0;
+      height: 42%;
+      background: linear-gradient(to top, var(--ink) 18%, rgb(21 18 15 / 0.75) 50%, transparent);
+      content: "";
+      pointer-events: none;
+    }
+
+    .hero-intro {
+      top: auto;
+      right: var(--gutter);
+      bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
+      max-width: none;
+      gap: 1.1rem;
+      justify-items: center;
+      color: var(--paper);
+      text-align: center;
+    }
+
+    .hero-intro p {
+      max-width: 26ch;
+      font-size: 1.0625rem;
+    }
+
+    .hero-badge {
+      top: 47%;
+      right: 0.75rem;
+      width: 5.75rem;
+    }
+
+    .hero-badge-ring {
+      font-size: 1.15rem;
+    }
+  }
+</style>

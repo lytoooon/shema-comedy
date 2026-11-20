@@ -1,0 +1,80 @@
+---
+import SectionHead from "../ui/SectionHead.astro";
+import { reach } from "../../data/content.js";
+---
+
+<section class="section reach" id="reach" aria-labelledby="reach-title">
+  <SectionHead kicker={reach.kicker} title={reach.title} note={reach.note} id="reach-title" />
+
+  <dl class="stats">
+    {
+      reach.stats.map((stat) => (
+        <div class="stat" data-reveal>
+          <dt class="stat-label">{stat.label}</dt>
+          <dd class="stat-value" data-count>
+            {stat.value}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 4vw, 4rem);
+    margin: 0;
+  }
+
+  /* Value above label, while the markup keeps label (dt) → value (dd) order. */
+  .stat {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1.5px solid var(--ink);
+  }
+
+  .stat-value {
+    margin: 0;
+    font: 800 clamp(4rem, 1.5rem + 9vw, 11rem) / 0.85 var(--font-display);
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.4s var(--ease-out);
+  }
+
+  .stat:hover .stat-value {
+    color: var(--red);
+  }
+
+  .stat-label {
+    color: var(--muted);
+    font-size: var(--text-base);
+  }
+
+  @media (width < 760px) {
+    .stats {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .stat {
+      flex-direction: row-reverse;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-block: 1.25rem;
+    }
+
+    .stat-value {
+      font-size: clamp(3.5rem, 18vw, 5.5rem);
+    }
+
+    .stat-label {
+      max-width: 12ch;
+      text-align: right;
+    }
+  }
+</style>
