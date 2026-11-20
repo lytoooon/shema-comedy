@@ -10,8 +10,8 @@ export const site = {
   timeZone: "Africa/Lusaka", // used by the live clock in the footer
 
   // Contact. `whatsapp` is the same number as digits only (country code, no +).
-  phone: "+260 777 320 048",
-  whatsapp: "260777320048",
+  phone: "+260 776 564 301",
+  whatsapp: "260776564301",
   email: "", // optional — fill in to show an email link in the contact section
 
   // Image shown when the site is shared on WhatsApp, X, Facebook… (file in /public)
